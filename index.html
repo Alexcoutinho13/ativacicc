@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ATIVA CICC - Avaliação de Saúde</title>
+    <link rel="stylesheet" href="styles.css">
+    <!-- Ícones do FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Cabeçalho com Logo -->
+        <header>
+            <img src="logo.png" alt="Logo ATIVA CICC" class="logo">
+            <h1>ATIVA CICC - Avaliação de Saúde</h1>
+        </header>
+
+        <!-- Layout de Duas Colunas -->
+        <div class="columns">
+            <!-- Coluna 1: Formulário -->
+            <div class="form-column">
+                <form id="avaliacaoForm">
+                    <fieldset>
+                        <legend>Dados Pessoais</legend>
+                        <label for="nome">Nome Completo:</label>
+                        <input type="text" id="nome" name="nome" required>
+
+                        <label for="dataNascimento">Data de Nascimento:</label>
+                        <input type="date" id="dataNascimento" name="dataNascimento" required>
+
+                        <label for="forcaOperativa">Força Operativa:</label>
+                        <select id="forcaOperativa" name="forcaOperativa" required>
+                            <option value="">Selecione uma opção</option>
+                            <option value="Policia Militar">Polícia Militar</option>
+                            <option value="Corpo de Bombeiros Militar">Corpo de Bombeiros Militar</option>
+                            <option value="Polícia Civil">Polícia Civil</option>
+                            <option value="STTP">STTP</option>
+                            <option value="Polícia Penal">Polícia Penal</option>
+                            <option value="Outros">Outros</option>
+                        </select>
+                    </fieldset>
+
+                    <fieldset>
+                        <legend>Medidas Antropométricas</legend>
+                        <label for="peso">Peso (kg):</label>
+                        <input type="number" id="peso" name="peso" step="0.1" required>
+
+                        <label for="altura">Altura (cm):</label>
+                        <input type="number" id="altura" name="altura" required>
+
+                        <label for="circAbdominal">Circunferência Abdominal (cm):</label>
+                        <input type="number" id="circAbdominal" name="circAbdominal" required>
+                    </fieldset>
+
+                    <fieldset>
+                        <legend>Avaliação Clínica</legend>
+                        <label for="pressaoArterial">Pressão Arterial (mmHg):</label>
+                        <input type="text" id="pressaoArterial" name="pressaoArterial" placeholder="Ex: 120/80" required>
+
+                        <label for="batimentos">Batimentos Cardíacos (bpm):</label>
+                        <input type="number" id="batimentos" name="batimentos" required>
+
+                        <label for="glicemia">Glicemia (mg/dL):</label>
+                        <input type="number" id="glicemia" name="glicemia" required>
+                    </fieldset>
+
+                    <button type="submit">Enviar Avaliação</button>
+                </form>
+            </div>
+
+            <!-- Coluna 2: Tabela de Dados -->
+            <div class="data-column">
+                <h2>Pacientes Cadastrados</h2>
+                <table id="tabelaPacientes">
+                    <thead>
+                        <tr>
+                            <th>Nome</th>
+                            <th>Idade</th>
+                            <th>Força Operativa</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Dados dos pacientes serão inseridos aqui via JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Editar -->
+    <div id="modalEditar" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Editar Paciente</h2>
+            <form id="formEditar">
+                <label for="editarNome">Nome Completo:</label>
+                <input type="text" id="editarNome" name="editarNome" required>
+
+                <label for="editarDataNascimento">Data de Nascimento:</label>
+                <input type="date" id="editarDataNascimento" name="editarDataNascimento" required>
+
+                <label for="editarForcaOperativa">Força Operativa:</label>
+                <select id="editarForcaOperativa" name="editarForcaOperativa" required>
+                    <option value="">Selecione uma opção</option>
+                    <option value="Policia Militar">Polícia Militar</option>
+                    <option value="Corpo de Bombeiros Militar">Corpo de Bombeiros Militar</option>
+                    <option value="Polícia Civil">Polícia Civil</option>
+                    <option value="STTP">STTP</option>
+                    <option value="Polícia Penal">Polícia Penal</option>
+                    <option value="Outros">Outros</option>
+                </select>
+
+                <label for="editarPeso">Peso (kg):</label>
+                <input type="number" id="editarPeso" name="editarPeso" step="0.1" required>
+
+                <label for="editarAltura">Altura (cm):</label>
+                <input type="number" id="editarAltura" name="editarAltura" required>
+
+                <label for="editarCircAbdominal">Circunferência Abdominal (cm):</label>
+                <input type="number" id="editarCircAbdominal" name="editarCircAbdominal" required>
+
+                <label for="editarPressaoArterial">Pressão Arterial (mmHg):</label>
+                <input type="text" id="editarPressaoArterial" name="editarPressaoArterial" placeholder="Ex: 120/80" required>
+
+                <label for="editarBatimentos">Batimentos Cardíacos (bpm):</label>
+                <input type="number" id="editarBatimentos" name="editarBatimentos" required>
+
+                <label for="editarGlicemia">Glicemia (mg/dL):</label>
+                <input type="number" id="editarGlicemia" name="editarGlicemia" required>
+                <button type="submit">Salvar Alterações</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal de Excluir -->
+    <div id="modalExcluir" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Excluir Paciente</h2>
+            <p>Tem certeza que deseja excluir este paciente?</p>
+            <button id="confirmarExclusao">Sim, Excluir</button>
+            <button id="cancelarExclusao">Cancelar</button>
+        </div>
+    </div>
+
+    <!-- Modal de Detalhar -->
+    <div id="modalDetalhar" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Detalhes do Paciente</h2>
+            <div id="detalhesPaciente">
+                <!-- Detalhes do paciente serão inseridos aqui -->
+            </div>
+            <button id="btnImprimir" onclick="imprimirInformacoes()"><i class="fas fa-print"></i> Imprimir</button>
+        </div>
+    </div>
+
+    <!-- Modal de Informações Médicas -->
+    <div id="modalInfoMedicas" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Informações Médicas</h2>
+            <form id="formInfoMedicas">
+                <label for="observacoesMedicas">Observações Médicas:</label>
+                <textarea id="observacoesMedicas" name="observacoesMedicas" rows="4"></textarea>
+                <button type="submit">Salvar Informações</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
