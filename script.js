@@ -1,4 +1,5 @@
 let pacientes = []; // Array para armazenar os pacientes
+let pacienteEditando = null; // Armazena o paciente sendo editado
 
 document.getElementById('avaliacaoForm').addEventListener('submit', function (event) {
     event.preventDefault(); // Impede o envio do formulário
@@ -63,38 +64,59 @@ function atualizarTabela() {
 
 // Funções para abrir modais
 function abrirModalEditar(index) {
-    const paciente = pacientes[index];
-    document.getElementById('editarNome').value = paciente.nome;
-    document.getElementById('editarDataNascimento').value = paciente.dataNascimento;
-    document.getElementById('editarForcaOperativa').value = paciente.forcaOperativa;
-    document.getElementById('editarPeso').value = paciente.peso;
-    document.getElementById('editarAltura').value = paciente.altura;
-    document.getElementById('editarCircAbdominal').value = paciente.circAbdominal;
-    document.getElementById('editarPressaoArterial').value = paciente.pressaoArterial;
-    document.getElementById('editarBatimentos').value = paciente.batimentos;
-    document.getElementById('editarGlicemia').value = paciente.glicemia;
+    pacienteEditando = pacientes[index];
 
+    // Preenche os campos de texto
+    document.getElementById('editarNomeTexto').textContent = pacienteEditando.nome;
+    document.getElementById('editarDataNascimentoTexto').textContent = pacienteEditando.dataNascimento;
+    document.getElementById('editarForcaOperativaTexto').textContent = pacienteEditando.forcaOperativa;
+    document.getElementById('editarPesoTexto').textContent = pacienteEditando.peso;
+    document.getElementById('editarAlturaTexto').textContent = pacienteEditando.altura;
+    document.getElementById('editarCircAbdominalTexto').textContent = pacienteEditando.circAbdominal;
+    document.getElementById('editarPressaoArterialTexto').textContent = pacienteEditando.pressaoArterial;
+    document.getElementById('editarBatimentosTexto').textContent = pacienteEditando.batimentos;
+    document.getElementById('editarGlicemiaTexto').textContent = pacienteEditando.glicemia;
+
+    // Exibe o modal
     const modal = document.getElementById('modalEditar');
     modal.style.display = 'flex';
+}
 
-    // Atualiza o paciente ao salvar
-    document.getElementById('formEditar').onsubmit = function (event) {
-        event.preventDefault();
-        pacientes[index] = {
-            ...paciente,
-            nome: document.getElementById('editarNome').value,
-            dataNascimento: document.getElementById('editarDataNascimento').value,
-            forcaOperativa: document.getElementById('editarForcaOperativa').value,
-            peso: document.getElementById('editarPeso').value,
-            altura: document.getElementById('editarAltura').value,
-            circAbdominal: document.getElementById('editarCircAbdominal').value,
-            pressaoArterial: document.getElementById('editarPressaoArterial').value,
-            batimentos: document.getElementById('editarBatimentos').value,
-            glicemia: document.getElementById('editarGlicemia').value
-        };
-        atualizarTabela();
-        modal.style.display = 'none';
+function editarCampo(idCampo) {
+    const campoTexto = document.getElementById(`${idCampo}Texto`);
+    const campoInput = document.getElementById(idCampo);
+
+    // Esconde o texto e exibe o campo de edição
+    campoTexto.style.display = 'none';
+    campoInput.style.display = 'inline-block';
+    campoInput.value = campoTexto.textContent; // Preenche o campo com o valor atual
+    campoInput.focus(); // Foca no campo
+
+    // Salva a alteração ao pressionar Enter
+    campoInput.onkeypress = function (event) {
+        if (event.key === 'Enter') {
+            salvarCampo(idCampo);
+        }
     };
+}
+
+function salvarCampo(idCampo) {
+    const campoTexto = document.getElementById(`${idCampo}Texto`);
+    const campoInput = document.getElementById(idCampo);
+
+    // Atualiza o texto e esconde o campo de edição
+    campoTexto.textContent = campoInput.value;
+    campoTexto.style.display = 'inline-block';
+    campoInput.style.display = 'none';
+
+    // Atualiza o paciente no array
+    pacienteEditando[idCampo.replace('editar', '').toLowerCase()] = campoInput.value;
+}
+
+function salvarEdicao() {
+    // Atualiza a tabela e fecha o modal
+    atualizarTabela();
+    document.getElementById('modalEditar').style.display = 'none';
 }
 
 function abrirModalExcluir(index) {
@@ -152,20 +174,71 @@ function abrirModalInfoMedicas(index) {
 
 // Função para imprimir informações
 function imprimirInformacoes() {
-    const conteudo = document.getElementById('detalhesPaciente').innerHTML;
+    const paciente = pacienteEditando;
+    const conteudo = `
+        <h2>Informações do Paciente</h2>
+        <table>
+            <tr>
+                <th>Campo</th>
+                <th>Valor</th>
+            </tr>
+            <tr>
+                <td>Nome</td>
+                <td>${paciente.nome}</td>
+            </tr>
+            <tr>
+                <td>Idade</td>
+                <td>${paciente.idade}</td>
+            </tr>
+            <tr>
+                <td>Força Operativa</td>
+                <td>${paciente.forcaOperativa}</td>
+            </tr>
+            <tr>
+                <td>Peso</td>
+                <td>${paciente.peso} kg</td>
+            </tr>
+            <tr>
+                <td>Altura</td>
+                <td>${paciente.altura} cm</td>
+            </tr>
+            <tr>
+                <td>Circunferência Abdominal</td>
+                <td>${paciente.circAbdominal} cm</td>
+            </tr>
+            <tr>
+                <td>Pressão Arterial</td>
+                <td>${paciente.pressaoArterial}</td>
+            </tr>
+            <tr>
+                <td>Batimentos Cardíacos</td>
+                <td>${paciente.batimentos} bpm</td>
+            </tr>
+            <tr>
+                <td>Glicemia</td>
+                <td>${paciente.glicemia} mg/dL</td>
+            </tr>
+            <tr>
+                <td>Observações Médicas</td>
+                <td>${paciente.observacoesMedicas}</td>
+            </tr>
+        </table>
+    `;
+
     const janelaImpressao = window.open('', '', 'width=600,height=600');
     janelaImpressao.document.write(`
         <html>
             <head>
                 <title>Informações do Paciente</title>
                 <style>
-                    body { font-family: Arial, sans-serif; }
-                    h2 { color: #007bff; }
-                    p { margin: 10px 0; }
+                    body { font-family: Arial, sans-serif; margin: 20px; }
+                    h2 { color: #007bff; text-align: center; }
+                    table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+                    th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+                    th { background-color: #f2f2f2; }
                 </style>
             </head>
             <body>
-                <h2>Informações do Paciente</h2>
                 ${conteudo}
             </body>
         </html>

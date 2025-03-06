@@ -22,7 +22,7 @@ header {
 }
 
 .logo {
-    max-width: 100%;
+    max-width: 150px;
     margin-bottom: 15px;
 }
 
@@ -221,6 +221,38 @@ tr:hover {
     right: 10px;
     font-size: 24px;
     cursor: pointer;
+}
+
+/* Estilos para o modal de edição */
+.editar-colunas {
+    display: flex;
+    gap: 20px;
+}
+
+.editar-colunas .coluna {
+    flex: 1;
+}
+
+.editar-colunas p {
+    margin-bottom: 15px;
+}
+
+.editar-colunas i {
+    margin-left: 10px;
+    cursor: pointer;
+    color: #007bff;
+}
+
+.editar-colunas i:hover {
+    opacity: 0.8;
+}
+
+.editar-campo {
+    width: 100%;
+    padding: 5px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
 }
 
 /* Responsividade */

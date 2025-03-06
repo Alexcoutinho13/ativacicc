@@ -94,43 +94,49 @@
         <div class="modal-content">
             <span class="close">&times;</span>
             <h2>Editar Paciente</h2>
-            <form id="formEditar">
-                <label for="editarNome">Nome Completo:</label>
-                <input type="text" id="editarNome" name="editarNome" required>
+            <div class="editar-colunas">
+                <!-- Coluna 1 -->
+                <div class="coluna">
+                    <p><strong>Nome:</strong> <span id="editarNomeTexto"></span> <i class="fas fa-edit" onclick="editarCampo('editarNome')"></i></p>
+                    <input type="text" id="editarNome" class="editar-campo" style="display: none;">
 
-                <label for="editarDataNascimento">Data de Nascimento:</label>
-                <input type="date" id="editarDataNascimento" name="editarDataNascimento" required>
+                    <p><strong>Data de Nascimento:</strong> <span id="editarDataNascimentoTexto"></span> <i class="fas fa-edit" onclick="editarCampo('editarDataNascimento')"></i></p>
+                    <input type="date" id="editarDataNascimento" class="editar-campo" style="display: none;">
 
-                <label for="editarForcaOperativa">Força Operativa:</label>
-                <select id="editarForcaOperativa" name="editarForcaOperativa" required>
-                    <option value="">Selecione uma opção</option>
-                    <option value="Policia Militar">Polícia Militar</option>
-                    <option value="Corpo de Bombeiros Militar">Corpo de Bombeiros Militar</option>
-                    <option value="Polícia Civil">Polícia Civil</option>
-                    <option value="STTP">STTP</option>
-                    <option value="Polícia Penal">Polícia Penal</option>
-                    <option value="Outros">Outros</option>
-                </select>
+                    <p><strong>Força Operativa:</strong> <span id="editarForcaOperativaTexto"></span> <i class="fas fa-edit" onclick="editarCampo('editarForcaOperativa')"></i></p>
+                    <select id="editarForcaOperativa" class="editar-campo" style="display: none;">
+                        <option value="">Selecione uma opção</option>
+                        <option value="Policia Militar">Polícia Militar</option>
+                        <option value="Corpo de Bombeiros Militar">Corpo de Bombeiros Militar</option>
+                        <option value="Polícia Civil">Polícia Civil</option>
+                        <option value="STTP">STTP</option>
+                        <option value="Polícia Penal">Polícia Penal</option>
+                        <option value="Outros">Outros</option>
+                    </select>
 
-                <label for="editarPeso">Peso (kg):</label>
-                <input type="number" id="editarPeso" name="editarPeso" step="0.1" required>
+                    <p><strong>Peso:</strong> <span id="editarPesoTexto"></span> kg <i class="fas fa-edit" onclick="editarCampo('editarPeso')"></i></p>
+                    <input type="number" id="editarPeso" class="editar-campo" style="display: none;">
 
-                <label for="editarAltura">Altura (cm):</label>
-                <input type="number" id="editarAltura" name="editarAltura" required>
+                    <p><strong>Altura:</strong> <span id="editarAlturaTexto"></span> cm <i class="fas fa-edit" onclick="editarCampo('editarAltura')"></i></p>
+                    <input type="number" id="editarAltura" class="editar-campo" style="display: none;">
+                </div>
 
-                <label for="editarCircAbdominal">Circunferência Abdominal (cm):</label>
-                <input type="number" id="editarCircAbdominal" name="editarCircAbdominal" required>
+                <!-- Coluna 2 -->
+                <div class="coluna">
+                    <p><strong>Circunferência Abdominal:</strong> <span id="editarCircAbdominalTexto"></span> cm <i class="fas fa-edit" onclick="editarCampo('editarCircAbdominal')"></i></p>
+                    <input type="number" id="editarCircAbdominal" class="editar-campo" style="display: none;">
 
-                <label for="editarPressaoArterial">Pressão Arterial (mmHg):</label>
-                <input type="text" id="editarPressaoArterial" name="editarPressaoArterial" placeholder="Ex: 120/80" required>
+                    <p><strong>Pressão Arterial:</strong> <span id="editarPressaoArterialTexto"></span> <i class="fas fa-edit" onclick="editarCampo('editarPressaoArterial')"></i></p>
+                    <input type="text" id="editarPressaoArterial" class="editar-campo" style="display: none;">
 
-                <label for="editarBatimentos">Batimentos Cardíacos (bpm):</label>
-                <input type="number" id="editarBatimentos" name="editarBatimentos" required>
+                    <p><strong>Batimentos Cardíacos:</strong> <span id="editarBatimentosTexto"></span> bpm <i class="fas fa-edit" onclick="editarCampo('editarBatimentos')"></i></p>
+                    <input type="number" id="editarBatimentos" class="editar-campo" style="display: none;">
 
-                <label for="editarGlicemia">Glicemia (mg/dL):</label>
-                <input type="number" id="editarGlicemia" name="editarGlicemia" required>
-                <button type="submit">Salvar Alterações</button>
-            </form>
+                    <p><strong>Glicemia:</strong> <span id="editarGlicemiaTexto"></span> mg/dL <i class="fas fa-edit" onclick="editarCampo('editarGlicemia')"></i></p>
+                    <input type="number" id="editarGlicemia" class="editar-campo" style="display: none;">
+                </div>
+            </div>
+            <button onclick="salvarEdicao()">Salvar Alterações</button>
         </div>
     </div>
 
