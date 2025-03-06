@@ -72,6 +72,10 @@
             <!-- Coluna 2: Tabela de Dados -->
             <div class="data-column">
                 <h2>Pacientes Cadastrados</h2>
+                <!-- Campo de busca -->
+                <div class="busca-container">
+                    <input type="text" id="busca" placeholder="Buscar paciente pelo nome..." oninput="filtrarPacientes()">
+                </div>
                 <table id="tabelaPacientes">
                     <thead>
                         <tr>
@@ -85,6 +89,12 @@
                         <!-- Dados dos pacientes serão inseridos aqui via JavaScript -->
                     </tbody>
                 </table>
+                <!-- Navegação de páginas -->
+                <div class="paginacao">
+                    <button id="anterior" onclick="mudarPagina(-1)">Anterior</button>
+                    <span id="paginaAtual">1</span>
+                    <button id="proximo" onclick="mudarPagina(1)">Próximo</button>
+                </div>
             </div>
         </div>
     </div>
@@ -170,7 +180,7 @@
             <h2>Informações Médicas</h2>
             <form id="formInfoMedicas">
                 <label for="observacoesMedicas">Observações Médicas:</label>
-                <textarea id="observacoesMedicas" name="observacoesMedicas" rows="4"></textarea>
+                <textarea id="observacoesMedicas" name="observacoesMedicas" rows="4" style="white-space: pre-wrap;"></textarea>
                 <button type="submit">Salvar Informações</button>
             </form>
         </div>

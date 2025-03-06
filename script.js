@@ -91,29 +91,29 @@ function editarCampo(idCampo) {
     campoInput.style.display = 'inline-block';
     campoInput.value = campoTexto.textContent; // Preenche o campo com o valor atual
     campoInput.focus(); // Foca no campo
-
-    // Salva a alteração ao pressionar Enter
-    campoInput.onkeypress = function (event) {
-        if (event.key === 'Enter') {
-            salvarCampo(idCampo);
-        }
-    };
-}
-
-function salvarCampo(idCampo) {
-    const campoTexto = document.getElementById(`${idCampo}Texto`);
-    const campoInput = document.getElementById(idCampo);
-
-    // Atualiza o texto e esconde o campo de edição
-    campoTexto.textContent = campoInput.value;
-    campoTexto.style.display = 'inline-block';
-    campoInput.style.display = 'none';
-
-    // Atualiza o paciente no array
-    pacienteEditando[idCampo.replace('editar', '').toLowerCase()] = campoInput.value;
 }
 
 function salvarEdicao() {
+    // Atualiza os campos editados
+    const campos = [
+        'editarNome', 'editarDataNascimento', 'editarForcaOperativa',
+        'editarPeso', 'editarAltura', 'editarCircAbdominal',
+        'editarPressaoArterial', 'editarBatimentos', 'editarGlicemia'
+    ];
+
+    campos.forEach(campo => {
+        const campoInput = document.getElementById(campo);
+        if (campoInput.style.display !== 'none') {
+            const campoTexto = document.getElementById(`${campo}Texto`);
+            campoTexto.textContent = campoInput.value;
+            campoTexto.style.display = 'inline-block';
+            campoInput.style.display = 'none';
+
+            // Atualiza o paciente no array
+            pacienteEditando[campo.replace('editar', '').toLowerCase()] = campoInput.value;
+        }
+    });
+
     // Atualiza a tabela e fecha o modal
     atualizarTabela();
     document.getElementById('modalEditar').style.display = 'none';
@@ -232,10 +232,10 @@ function imprimirInformacoes() {
                 <title>Informações do Paciente</title>
                 <style>
                     body { font-family: Arial, sans-serif; margin: 20px; }
-                    h2 { color: #007bff; text-align: center; }
+                    h2 { color: #007bff; text-align: center; margin-bottom: 20px; }
                     table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-                    th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
-                    th { background-color: #f2f2f2; }
+                    th, td { border: 1px solid #000; padding: 10px; text-align: left; }
+                    th { background-color: #f2f2f2; font-weight: bold; }
                 </style>
             </head>
             <body>
