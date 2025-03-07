@@ -1,5 +1,7 @@
+const API_URL = 'http://localhost:3000'; // URL da API local (substitua pela URL do Render/Heroku depois)
+
 let pacientes = []; // Array para armazenar os pacientes
-let pacienteEditando = null; // Armazena o paciente sendo editado
+let pacienteEditandoIndex = null; // Índice do paciente sendo editado
 let paginaAtual = 1; // Página atual da paginação
 const pacientesPorPagina = 10; // Número de pacientes por página
 let filtroAtual = 'todos'; // Filtro atual: 'todos', 'ligado', 'desligado'
@@ -23,7 +25,7 @@ window.addEventListener('click', function (event) {
 });
 
 // Adicionar paciente ao enviar o formulário
-document.getElementById('avaliacaoForm').addEventListener('submit', function (event) {
+document.getElementById('avaliacaoForm').addEventListener('submit', async function (event) {
     event.preventDefault(); // Impede o envio do formulário
 
     // Coleta os dados do formulário
@@ -45,20 +47,18 @@ document.getElementById('avaliacaoForm').addEventListener('submit', function (ev
     // Calcula a idade
     paciente.idade = calcularIdade(paciente.dataNascimento);
 
-    // Adiciona o paciente ao array
-    pacientes.push(paciente);
-
-    // Ordena os pacientes por nome
-    pacientes.sort((a, b) => a.nome.localeCompare(b.nome));
+    // Adiciona o paciente via API
+    await adicionarPaciente(paciente);
 
     // Atualiza a tabela
-    atualizarTabela();
+    await atualizarTabela();
 
     // Limpa o formulário e fecha o modal
     event.target.reset();
     document.getElementById('modalFormulario').style.display = 'none';
 });
 
+// Função para calcular a idade
 function calcularIdade(dataNascimento) {
     const hoje = new Date();
     const nascimento = new Date(dataNascimento);
@@ -70,9 +70,70 @@ function calcularIdade(dataNascimento) {
     return idade;
 }
 
-function atualizarTabela() {
+// Função para buscar pacientes da API
+async function buscarPacientes() {
+    try {
+        const response = await fetch(`${API_URL}/pacientes`);
+        if (!response.ok) throw new Error('Erro ao buscar pacientes');
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error('Erro:', error);
+        return [];
+    }
+}
+
+// Função para adicionar um paciente via API
+async function adicionarPaciente(paciente) {
+    try {
+        const response = await fetch(`${API_URL}/pacientes`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(paciente),
+        });
+        if (!response.ok) throw new Error('Erro ao adicionar paciente');
+        return await response.json();
+    } catch (error) {
+        console.error('Erro:', error);
+        return null;
+    }
+}
+
+// Função para atualizar um paciente via API
+async function atualizarPaciente(id, novosDados) {
+    try {
+        const response = await fetch(`${API_URL}/pacientes/${id}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(novosDados),
+        });
+        if (!response.ok) throw new Error('Erro ao atualizar paciente');
+        return await response.json();
+    } catch (error) {
+        console.error('Erro:', error);
+        return null;
+    }
+}
+
+// Função para deletar um paciente via API
+async function deletarPaciente(id) {
+    try {
+        const response = await fetch(`${API_URL}/pacientes/${id}`, {
+            method: 'DELETE',
+        });
+        if (!response.ok) throw new Error('Erro ao deletar paciente');
+    } catch (error) {
+        console.error('Erro:', error);
+    }
+}
+
+// Função para atualizar a tabela de pacientes
+async function atualizarTabela() {
     const tabela = document.getElementById('tabelaPacientes').getElementsByTagName('tbody')[0];
     tabela.innerHTML = ""; // Limpa a tabela
+
+    const pacientesAPI = await buscarPacientes(); // Busca os pacientes da API
+    pacientes = pacientesAPI; // Atualiza o array local de pacientes
 
     // Filtra os pacientes com base no filtro atual
     let pacientesFiltrados = pacientes;
@@ -112,13 +173,20 @@ function atualizarTabela() {
     atualizarPaginacao(pacientesFiltrados.length);
 }
 
-// Função para alternar o status do botão toggle
-function alternarStatus(index) {
+// Função para alternar o status do paciente
+async function alternarStatus(index) {
     const paciente = pacientes[index];
-    paciente.status = !paciente.status; // Alterna entre true e false
-    atualizarTabela(); // Atualiza a tabela para refletir o novo estado
+    if (!paciente) {
+        console.error('Paciente não encontrado');
+        return;
+    }
+
+    paciente.status = !paciente.status; // Alterna o status
+    await atualizarPaciente(index, paciente); // Atualiza o paciente via API
+    await atualizarTabela(); // Atualiza a tabela
 }
 
+// Função para atualizar a paginação
 function atualizarPaginacao(totalPacientes) {
     const paginacao = document.querySelector('.paginacao');
     paginacao.innerHTML = ""; // Limpa a paginação
@@ -141,7 +209,7 @@ function atualizarPaginacao(totalPacientes) {
     }
 }
 
-// Função para filtrar pacientes pelo toggle
+// Função para filtrar pacientes pelo toggle (ligado/desligado)
 function filtrarPorToggle(filtro) {
     filtroAtual = filtro;
     paginaAtual = 1; // Reseta a página para a primeira
@@ -152,96 +220,73 @@ function filtrarPorToggle(filtro) {
     document.getElementById(`filtro${filtro.charAt(0).toUpperCase() + filtro.slice(1)}`).classList.add('ativo');
 }
 
-// Funções para abrir modais
+// Função para abrir o modal de edição
 function abrirModalEditar(index) {
-    pacienteEditando = pacientes[index];
+    const paciente = pacientes[index];
+    if (!paciente) {
+        console.error('Paciente não encontrado');
+        return;
+    }
 
-    // Preenche os campos de texto
-    document.getElementById('editarNomeTexto').textContent = pacienteEditando.nome;
-    document.getElementById('editarMatriculaTexto').textContent = pacienteEditando.matricula;
-    document.getElementById('editarDataNascimentoTexto').textContent = pacienteEditando.dataNascimento;
-    document.getElementById('editarForcaOperativaTexto').textContent = pacienteEditando.forcaOperativa;
-    document.getElementById('editarPesoTexto').textContent = pacienteEditando.peso;
-    document.getElementById('editarAlturaTexto').textContent = pacienteEditando.altura;
-    document.getElementById('editarCircAbdominalTexto').textContent = pacienteEditando.circAbdominal;
-    document.getElementById('editarPressaoArterialTexto').textContent = pacienteEditando.pressaoArterial;
-    document.getElementById('editarBatimentosTexto').textContent = pacienteEditando.batimentos;
-    document.getElementById('editarGlicemiaTexto').textContent = pacienteEditando.glicemia;
+    pacienteEditandoIndex = index;
+
+    // Preenche os campos do modal de edição
+    document.getElementById('editarNomeTexto').textContent = paciente.nome;
+    document.getElementById('editarMatriculaTexto').textContent = paciente.matricula;
+    document.getElementById('editarDataNascimentoTexto').textContent = paciente.dataNascimento;
+    document.getElementById('editarForcaOperativaTexto').textContent = paciente.forcaOperativa;
+    document.getElementById('editarPesoTexto').textContent = paciente.peso;
+    document.getElementById('editarAlturaTexto').textContent = paciente.altura;
+    document.getElementById('editarCircAbdominalTexto').textContent = paciente.circAbdominal;
+    document.getElementById('editarPressaoArterialTexto').textContent = paciente.pressaoArterial;
+    document.getElementById('editarBatimentosTexto').textContent = paciente.batimentos;
+    document.getElementById('editarGlicemiaTexto').textContent = paciente.glicemia;
 
     // Exibe o modal
-    const modal = document.getElementById('modalEditar');
-    modal.style.display = 'flex';
+    document.getElementById('modalEditar').style.display = 'flex';
 }
 
-function editarCampo(idCampo) {
-    const campoTexto = document.getElementById(`${idCampo}Texto`);
-    const campoInput = document.getElementById(idCampo);
+// Função para salvar a edição
+async function salvarEdicao() {
+    const novosDados = {
+        nome: document.getElementById('editarNome').value,
+        matricula: document.getElementById('editarMatricula').value,
+        dataNascimento: document.getElementById('editarDataNascimento').value,
+        forcaOperativa: document.getElementById('editarForcaOperativa').value,
+        peso: document.getElementById('editarPeso').value,
+        altura: document.getElementById('editarAltura').value,
+        circAbdominal: document.getElementById('editarCircAbdominal').value,
+        pressaoArterial: document.getElementById('editarPressaoArterial').value,
+        batimentos: document.getElementById('editarBatimentos').value,
+        glicemia: document.getElementById('editarGlicemia').value,
+    };
 
-    // Esconde o texto e exibe o campo de edição
-    campoTexto.style.display = 'none';
-    campoInput.style.display = 'inline-block';
-    campoInput.value = campoTexto.textContent; // Preenche o campo com o valor atual
-    campoInput.focus(); // Foca no campo
+    await atualizarPaciente(pacienteEditandoIndex, novosDados); // Salva a edição
+    document.getElementById('modalEditar').style.display = 'none'; // Fecha o modal
+    await atualizarTabela(); // Atualiza a tabela
 }
 
-function salvarEdicao() {
-    // Atualiza os campos editados
-    const campos = [
-        { id: 'editarNome', chave: 'nome' },
-        { id: 'editarMatricula', chave: 'matricula' },
-        { id: 'editarDataNascimento', chave: 'dataNascimento' },
-        { id: 'editarForcaOperativa', chave: 'forcaOperativa' },
-        { id: 'editarPeso', chave: 'peso' },
-        { id: 'editarAltura', chave: 'altura' },
-        { id: 'editarCircAbdominal', chave: 'circAbdominal' },
-        { id: 'editarPressaoArterial', chave: 'pressaoArterial' },
-        { id: 'editarBatimentos', chave: 'batimentos' },
-        { id: 'editarGlicemia', chave: 'glicemia' }
-    ];
-
-    campos.forEach(({ id, chave }) => {
-        const campoInput = document.getElementById(id);
-        if (campoInput.style.display !== 'none') {
-            const campoTexto = document.getElementById(`${id}Texto`);
-            campoTexto.textContent = campoInput.value;
-            campoTexto.style.display = 'inline-block';
-            campoInput.style.display = 'none';
-
-            // Atualiza o paciente no array
-            pacienteEditando[chave] = campoInput.value;
-        }
-    });
-
-    // Recalcula a idade
-    pacienteEditando.idade = calcularIdade(pacienteEditando.dataNascimento);
-
-    // Ordena os pacientes por nome
-    pacientes.sort((a, b) => a.nome.localeCompare(b.nome));
-
-    // Atualiza a tabela e fecha o modal
-    atualizarTabela();
-    document.getElementById('modalEditar').style.display = 'none';
-}
-
+// Função para abrir o modal de exclusão
 function abrirModalExcluir(index) {
-    const modal = document.getElementById('modalExcluir');
-    modal.style.display = 'flex';
-
-    // Confirma a exclusão
-    document.getElementById('confirmarExclusao').onclick = function () {
-        pacientes.splice(index, 1); // Remove o paciente do array
-        atualizarTabela(); // Atualiza a tabela
-        modal.style.display = 'none'; // Fecha o modal
-    };
-
-    // Cancela a exclusão
-    document.getElementById('cancelarExclusao').onclick = function () {
-        modal.style.display = 'none'; // Fecha o modal
-    };
+    pacienteEditandoIndex = index;
+    document.getElementById('modalExcluir').style.display = 'flex';
 }
 
+// Função para confirmar a exclusão
+async function confirmarExclusao() {
+    await deletarPaciente(pacienteEditandoIndex); // Deleta o paciente
+    document.getElementById('modalExcluir').style.display = 'none'; // Fecha o modal
+    await atualizarTabela(); // Atualiza a tabela
+}
+
+// Função para abrir o modal de detalhes
 function abrirModalDetalhar(index) {
     const paciente = pacientes[index];
+    if (!paciente) {
+        console.error('Paciente não encontrado');
+        return;
+    }
+
     const detalhes = `
         <p><strong>Nome:</strong> ${paciente.nome}</p>
         <p><strong>Idade:</strong> ${paciente.idade}</p>
@@ -256,24 +301,32 @@ function abrirModalDetalhar(index) {
     `;
     document.getElementById('detalhesPaciente').innerHTML = detalhes;
 
-    const modal = document.getElementById('modalDetalhar');
-    modal.style.display = 'flex';
+    // Exibe o modal
+    document.getElementById('modalDetalhar').style.display = 'flex';
 }
 
+// Função para abrir o modal de informações médicas
 function abrirModalInfoMedicas(index) {
     const paciente = pacientes[index];
+    if (!paciente) {
+        console.error('Paciente não encontrado');
+        return;
+    }
+
+    pacienteEditandoIndex = index;
     document.getElementById('observacoesMedicas').value = paciente.observacoesMedicas;
 
-    const modal = document.getElementById('modalInfoMedicas');
-    modal.style.display = 'flex';
+    // Exibe o modal
+    document.getElementById('modalInfoMedicas').style.display = 'flex';
+}
 
-    // Atualiza as informações médicas ao salvar
-    document.getElementById('formInfoMedicas').onsubmit = function (event) {
-        event.preventDefault();
-        pacientes[index].observacoesMedicas = document.getElementById('observacoesMedicas').value;
-        atualizarTabela();
-        modal.style.display = 'none';
-    };
+// Função para salvar as informações médicas
+async function salvarInfoMedicas() {
+    const observacoes = document.getElementById('observacoesMedicas').value;
+    pacientes[pacienteEditandoIndex].observacoesMedicas = observacoes;
+    await atualizarPaciente(pacienteEditandoIndex, pacientes[pacienteEditandoIndex]); // Atualiza o paciente
+    document.getElementById('modalInfoMedicas').style.display = 'none'; // Fecha o modal
+    await atualizarTabela(); // Atualiza a tabela
 }
 
 // Função para buscar pacientes pelo nome
@@ -311,7 +364,7 @@ function filtrarPacientes() {
 
 // Função para imprimir informações
 function imprimirInformacoes() {
-    const paciente = pacienteEditando;
+    const paciente = pacientes[pacienteEditandoIndex];
     const conteudo = `
         <h2>Informações do Paciente</h2>
         <table>
@@ -385,11 +438,23 @@ function imprimirInformacoes() {
 }
 
 // Fechar modais ao clicar no "X"
-document.querySelectorAll('.close').forEach(close => {
+document.querySelectorAll('.modal .close').forEach(close => {
     close.addEventListener('click', () => {
         const modal = close.closest('.modal');
         if (modal) {
             modal.style.display = 'none';
         }
     });
+});
+
+// Fechar modais ao clicar fora deles
+window.addEventListener('click', (event) => {
+    if (event.target.classList.contains('modal')) {
+        event.target.style.display = 'none';
+    }
+});
+
+// Inicializa a tabela ao carregar a página
+document.addEventListener('DOMContentLoaded', () => {
+    atualizarTabela();
 });
