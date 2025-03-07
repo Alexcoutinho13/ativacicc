@@ -3,23 +3,42 @@ let pacienteEditando = null; // Armazena o paciente sendo editado
 let paginaAtual = 1; // Página atual da paginação
 const pacientesPorPagina = 10; // Número de pacientes por página
 
+// Função para abrir o modal do formulário
+document.getElementById('abrirModalFormulario').addEventListener('click', function () {
+    document.getElementById('modalFormulario').style.display = 'flex';
+});
+
+// Fechar o modal do formulário ao clicar no "X"
+document.querySelector('#modalFormulario .close').addEventListener('click', function () {
+    document.getElementById('modalFormulario').style.display = 'none';
+});
+
+// Fechar o modal do formulário ao clicar fora dele
+window.addEventListener('click', function (event) {
+    const modal = document.getElementById('modalFormulario');
+    if (event.target === modal) {
+        modal.style.display = 'none';
+    }
+});
+
+// Adicionar paciente ao enviar o formulário
 document.getElementById('avaliacaoForm').addEventListener('submit', function (event) {
     event.preventDefault(); // Impede o envio do formulário
 
-// Coleta os dados do formulário
-const paciente = {
-    nome: document.getElementById('nome').value,
-    matricula: document.getElementById('matricula').value, // Novo campo
-    dataNascimento: document.getElementById('dataNascimento').value,
-    forcaOperativa: document.getElementById('forcaOperativa').value,
-    peso: document.getElementById('peso').value,
-    altura: document.getElementById('altura').value,
-    circAbdominal: document.getElementById('circAbdominal').value,
-    pressaoArterial: document.getElementById('pressaoArterial').value,
-    batimentos: document.getElementById('batimentos').value,
-    glicemia: document.getElementById('glicemia').value,
-    observacoesMedicas: "" // Inicialmente vazio
-};
+    // Coleta os dados do formulário
+    const paciente = {
+        nome: document.getElementById('nome').value,
+        matricula: document.getElementById('matricula').value,
+        dataNascimento: document.getElementById('dataNascimento').value,
+        forcaOperativa: document.getElementById('forcaOperativa').value,
+        peso: document.getElementById('peso').value,
+        altura: document.getElementById('altura').value,
+        circAbdominal: document.getElementById('circAbdominal').value,
+        pressaoArterial: document.getElementById('pressaoArterial').value,
+        batimentos: document.getElementById('batimentos').value,
+        glicemia: document.getElementById('glicemia').value,
+        observacoesMedicas: "" // Inicialmente vazio
+    };
 
     // Calcula a idade
     paciente.idade = calcularIdade(paciente.dataNascimento);
@@ -33,8 +52,9 @@ const paciente = {
     // Atualiza a tabela
     atualizarTabela();
 
-    // Limpa o formulário
+    // Limpa o formulário e fecha o modal
     event.target.reset();
+    document.getElementById('modalFormulario').style.display = 'none';
 });
 
 function calcularIdade(dataNascimento) {
@@ -61,7 +81,7 @@ function atualizarTabela() {
         const newRow = tabela.insertRow();
         newRow.innerHTML = `
             <td>${paciente.nome}</td>
-            <td>${paciente.matricula}</td> <!-- Novo campo -->
+            <td>${paciente.matricula}</td>
             <td>${paciente.idade}</td>
             <td>${paciente.forcaOperativa}</td>
             <td class="acoes">
@@ -105,7 +125,7 @@ function abrirModalEditar(index) {
 
     // Preenche os campos de texto
     document.getElementById('editarNomeTexto').textContent = pacienteEditando.nome;
-    document.getElementById('editarMatriculaTexto').textContent = pacienteEditando.matricula; // Novo campo
+    document.getElementById('editarMatriculaTexto').textContent = pacienteEditando.matricula;
     document.getElementById('editarDataNascimentoTexto').textContent = pacienteEditando.dataNascimento;
     document.getElementById('editarForcaOperativaTexto').textContent = pacienteEditando.forcaOperativa;
     document.getElementById('editarPesoTexto').textContent = pacienteEditando.peso;
@@ -162,6 +182,7 @@ function salvarEdicao() {
     atualizarTabela();
     document.getElementById('modalEditar').style.display = 'none';
 }
+
 function abrirModalExcluir(index) {
     const modal = document.getElementById('modalExcluir');
     modal.style.display = 'flex';
@@ -215,7 +236,6 @@ function abrirModalInfoMedicas(index) {
     };
 }
 
-
 // Função para buscar pacientes pelo nome
 function filtrarPacientes() {
     const termo = document.getElementById('busca').value.toLowerCase();
@@ -231,6 +251,7 @@ function filtrarPacientes() {
         const newRow = tabela.insertRow();
         newRow.innerHTML = `
             <td>${paciente.nome}</td>
+            <td>${paciente.matricula}</td>
             <td>${paciente.idade}</td>
             <td>${paciente.forcaOperativa}</td>
             <td class="acoes">

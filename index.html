@@ -14,91 +14,92 @@
         <header>
             <img src="logo.png" alt="Logo ATIVA CICC" class="logo">
         </header>
-
-        <!-- Layout de Duas Colunas -->
-        <div class="columns">
-            <!-- Coluna 1: Formulário -->
-            <div class="form-column">
-                <form id="avaliacaoForm">
-                    <fieldset>
-                        <legend>Dados Pessoais</legend>
-                        <label for="nome">Nome Completo:</label>
-                        <input type="text" id="nome" name="nome" required>
-                    
-                        <label for="matricula">Matrícula:</label>
-                        <input type="text" id="matricula" name="matricula" required>
-                    
-                        <label for="dataNascimento">Data de Nascimento:</label>
-                        <input type="date" id="dataNascimento" name="dataNascimento" required>
-                    
-                        <label for="forcaOperativa">Força Operativa:</label>
-                        <select id="forcaOperativa" name="forcaOperativa" required>
-                            <option value="">Selecione uma opção</option>
-                            <option value="Policia Militar">Polícia Militar</option>
-                            <option value="Corpo de Bombeiros Militar">Corpo de Bombeiros Militar</option>
-                            <option value="Polícia Civil">Polícia Civil</option>
-                            <option value="STTP">STTP</option>
-                            <option value="Polícia Penal">Polícia Penal</option>
-                            <option value="Outros">Outros</option>
-                        </select>
-                    </fieldset>
-
-                    <fieldset>
-                        <legend>Medidas Antropométricas</legend>
-                        <label for="peso">Peso (kg):</label>
-                        <input type="number" id="peso" name="peso" step="0.1" required>
-
-                        <label for="altura">Altura (cm):</label>
-                        <input type="number" id="altura" name="altura" required>
-
-                        <label for="circAbdominal">Circunferência Abdominal (cm):</label>
-                        <input type="number" id="circAbdominal" name="circAbdominal" required>
-                    </fieldset>
-
-                    <fieldset>
-                        <legend>Avaliação Clínica</legend>
-                        <label for="pressaoArterial">Pressão Arterial (mmHg):</label>
-                        <input type="text" id="pressaoArterial" name="pressaoArterial" placeholder="Ex: 120/80" required>
-
-                        <label for="batimentos">Batimentos Cardíacos (bpm):</label>
-                        <input type="number" id="batimentos" name="batimentos" required>
-
-                        <label for="glicemia">Glicemia (mg/dL):</label>
-                        <input type="number" id="glicemia" name="glicemia" required>
-                    </fieldset>
-
-                    <button type="submit">Enviar Avaliação</button>
-                </form>
+        <button id="abrirModalFormulario" class="btn-inserir-paciente">Inserir Novo Paciente</button>
+        <!-- Coluna da Tabela de Dados -->
+        <div class="data-column">
+            <h2>Pacientes Cadastrados</h2>
+            <!-- Campo de busca -->
+            <div class="busca-container">
+                <input type="text" id="busca" placeholder="Buscar paciente pelo nome..." oninput="filtrarPacientes()">
             </div>
-
-            <!-- Coluna 2: Tabela de Dados -->
-            <div class="data-column">
-                <h2>Pacientes Cadastrados</h2>
-                <!-- Campo de busca -->
-                <div class="busca-container">
-                    <input type="text" id="busca" placeholder="Buscar paciente pelo nome..." oninput="filtrarPacientes()">
-                </div>
-                <table id="tabelaPacientes">
-                    <thead>
-                        <tr>
-                            <th>Nome</th>
-                            <th>Matrícula</th> <!-- Novo campo -->
-                            <th>Idade</th>
-                            <th>Força Operativa</th>
-                            <th>Ações</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <!-- Dados dos pacientes serão inseridos aqui via JavaScript -->
-                    </tbody>
-                </table>
-                <!-- Navegação de páginas -->
-                <div class="paginacao">
-                    <button id="anterior" onclick="mudarPagina(-1)">Anterior</button>
-                    <span id="paginaAtual">1</span>
-                    <button id="proximo" onclick="mudarPagina(1)">Próximo</button>
-                </div>
+            <table id="tabelaPacientes">
+                <thead>
+                    <tr>
+                        <th>Nome</th>
+                        <th>Matrícula</th>
+                        <th>Idade</th>
+                        <th>Força Operativa</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Dados dos pacientes serão inseridos aqui via JavaScript -->
+                </tbody>
+            </table>
+            <!-- Navegação de páginas -->
+            <div class="paginacao">
+                <button id="anterior" onclick="mudarPagina(-1)">Anterior</button>
+                <span id="paginaAtual">1</span>
+                <button id="proximo" onclick="mudarPagina(1)">Próximo</button>
             </div>
+        </div>
+    </div>
+
+    <!-- Modal de Formulário -->
+    <div id="modalFormulario" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Inserir Novo Paciente</h2>
+            <form id="avaliacaoForm">
+                <fieldset>
+                    <legend>Dados Pessoais</legend>
+                    <label for="nome">Nome Completo:</label>
+                    <input type="text" id="nome" name="nome" required>
+                
+                    <label for="matricula">Matrícula:</label>
+                    <input type="text" id="matricula" name="matricula" required>
+                
+                    <label for="dataNascimento">Data de Nascimento:</label>
+                    <input type="date" id="dataNascimento" name="dataNascimento" required>
+                
+                    <label for="forcaOperativa">Força Operativa:</label>
+                    <select id="forcaOperativa" name="forcaOperativa" required>
+                        <option value="">Selecione uma opção</option>
+                        <option value="Policia Militar">Polícia Militar</option>
+                        <option value="Corpo de Bombeiros Militar">Corpo de Bombeiros Militar</option>
+                        <option value="Polícia Civil">Polícia Civil</option>
+                        <option value="STTP">STTP</option>
+                        <option value="Polícia Penal">Polícia Penal</option>
+                        <option value="Outros">Outros</option>
+                    </select>
+                </fieldset>
+
+                <fieldset>
+                    <legend>Medidas Antropométricas</legend>
+                    <label for="peso">Peso (kg):</label>
+                    <input type="number" id="peso" name="peso" step="0.1" required>
+
+                    <label for="altura">Altura (cm):</label>
+                    <input type="number" id="altura" name="altura" required>
+
+                    <label for="circAbdominal">Circunferência Abdominal (cm):</label>
+                    <input type="number" id="circAbdominal" name="circAbdominal" required>
+                </fieldset>
+
+                <fieldset>
+                    <legend>Avaliação Clínica</legend>
+                    <label for="pressaoArterial">Pressão Arterial (mmHg):</label>
+                    <input type="text" id="pressaoArterial" name="pressaoArterial" placeholder="Ex: 120/80" required>
+
+                    <label for="batimentos">Batimentos Cardíacos (bpm):</label>
+                    <input type="number" id="batimentos" name="batimentos" required>
+
+                    <label for="glicemia">Glicemia (mg/dL):</label>
+                    <input type="number" id="glicemia" name="glicemia" required>
+                </fieldset>
+
+                <button type="submit">Enviar Avaliação</button>
+            </form>
         </div>
     </div>
 

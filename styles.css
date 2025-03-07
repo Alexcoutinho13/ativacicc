@@ -18,7 +18,8 @@ body {
 
 header {
     text-align: center;
-    margin-bottom: 10px;
+    margin-bottom: 20px;
+    position: relative;
 }
 
 .logo {
@@ -26,34 +27,35 @@ header {
     margin-bottom: 15px;
 }
 
-.columns {
-    display: flex;
-    gap: 20px;
+.btn-inserir-paciente {
+    padding: 10px 20px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 500;
+    transition: background-color 0.3s ease;
 }
 
-.form-column {
-    flex: 1;
-    max-width: 25%;
-    background-color: #f3f3f7;
-    padding: 10px;
-    border-radius: 10px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+.btn-inserir-paciente:hover {
+    background-color: #208537;
 }
 
 .data-column {
-    flex: 3;
-    max-width: 75%;
+    width: 100%;
     background-color: #fff;
-    padding: 10px;
+    padding: 20px;
     border-radius: 10px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
+/* Estilos do Formulário */
 fieldset {
     border: 1px solid #ddd;
     border-radius: 8px;
-    padding: 10px;
-    margin-bottom: 10px;
+    margin-bottom: 3px;
     background-color: #fff;
 }
 
@@ -69,7 +71,7 @@ legend {
 
 label {
     display: block;
-    margin-bottom: 4px;
+    margin-bottom: 2px;
     color: #555;
     font-weight: 500;
 }
@@ -80,12 +82,12 @@ input[type="number"],
 textarea,
 select {
     width: 100%;
-    padding: 10px;
-    margin-bottom: 10px;
+    padding: 8px;
+    margin-bottom: 5px;
     border: 1px solid #ccc;
     border-radius: 6px;
     box-sizing: border-box;
-    font-size: 14px;
+    font-size: 12px;
     transition: border-color 0.3s ease;
 }
 
@@ -140,7 +142,7 @@ th, td {
 }
 
 th {
-    background-color: #007bff;
+    background-color: #436488;
     color: white;
     font-weight: 600;
 }
@@ -208,7 +210,7 @@ table th:nth-child(2), table td:nth-child(2) {
 
 .modal-content {
     background-color: #fff;
-    padding: 20px;
+    padding: 10px 20px;
     border-radius: 8px;
     width: 90%;
     max-width: 800px;
@@ -222,6 +224,7 @@ table th:nth-child(2), table td:nth-child(2) {
     font-size: 24px;
     cursor: pointer;
 }
+
 .modal-content button {
     width: 100%;
     padding: 12px;
@@ -240,6 +243,9 @@ table th:nth-child(2), table td:nth-child(2) {
     background-color: #1b682d;
 }
 
+.modal-content h2 {
+    margin-bottom: 5px;
+}
 /* Estilos para o modal de edição */
 .editar-colunas {
     display: flex;
