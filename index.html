@@ -24,10 +24,13 @@
                         <legend>Dados Pessoais</legend>
                         <label for="nome">Nome Completo:</label>
                         <input type="text" id="nome" name="nome" required>
-
+                    
+                        <label for="matricula">Matrícula:</label>
+                        <input type="text" id="matricula" name="matricula" required>
+                    
                         <label for="dataNascimento">Data de Nascimento:</label>
                         <input type="date" id="dataNascimento" name="dataNascimento" required>
-
+                    
                         <label for="forcaOperativa">Força Operativa:</label>
                         <select id="forcaOperativa" name="forcaOperativa" required>
                             <option value="">Selecione uma opção</option>
@@ -79,6 +82,7 @@
                     <thead>
                         <tr>
                             <th>Nome</th>
+                            <th>Matrícula</th> <!-- Novo campo -->
                             <th>Idade</th>
                             <th>Força Operativa</th>
                             <th>Ações</th>
@@ -103,14 +107,15 @@
         <div class="modal-content">
             <span class="close">&times;</span>
             <h2>Editar Paciente</h2>
-            <div class="editar-colunas">
-                <!-- Coluna 1 -->
-                <div class="coluna">
-                    <p><strong>Nome:</strong> <span id="editarNomeTexto"></span> <i class="fas fa-edit" onclick="editarCampo('editarNome')"></i></p>
-                    <input type="text" id="editarNome" class="editar-campo" style="display: none;">
-
-                    <p><strong>Data de Nascimento:</strong> <span id="editarDataNascimentoTexto"></span> <i class="fas fa-edit" onclick="editarCampo('editarDataNascimento')"></i></p>
-                    <input type="date" id="editarDataNascimento" class="editar-campo" style="display: none;">
+            <div class="coluna">
+                <p><strong>Nome:</strong> <span id="editarNomeTexto"></span> <i class="fas fa-edit" onclick="editarCampo('editarNome')"></i></p>
+                <input type="text" id="editarNome" class="editar-campo" style="display: none;">
+            
+                <p><strong>Matrícula:</strong> <span id="editarMatriculaTexto"></span> <i class="fas fa-edit" onclick="editarCampo('editarMatricula')"></i></p>
+                <input type="text" id="editarMatricula" class="editar-campo" style="display: none;">
+            
+                <p><strong>Data de Nascimento:</strong> <span id="editarDataNascimentoTexto"></span> <i class="fas fa-edit" onclick="editarCampo('editarDataNascimento')"></i></p>
+                <input type="date" id="editarDataNascimento" class="editar-campo" style="display: none;">
 
                     <p><strong>Força Operativa:</strong> <span id="editarForcaOperativaTexto"></span> <i class="fas fa-edit" onclick="editarCampo('editarForcaOperativa')"></i></p>
                     <select id="editarForcaOperativa" class="editar-campo" style="display: none;">

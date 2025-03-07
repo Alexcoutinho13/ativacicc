@@ -6,19 +6,20 @@ const pacientesPorPagina = 10; // Número de pacientes por página
 document.getElementById('avaliacaoForm').addEventListener('submit', function (event) {
     event.preventDefault(); // Impede o envio do formulário
 
-    // Coleta os dados do formulário
-    const paciente = {
-        nome: document.getElementById('nome').value,
-        dataNascimento: document.getElementById('dataNascimento').value,
-        forcaOperativa: document.getElementById('forcaOperativa').value,
-        peso: document.getElementById('peso').value,
-        altura: document.getElementById('altura').value,
-        circAbdominal: document.getElementById('circAbdominal').value,
-        pressaoArterial: document.getElementById('pressaoArterial').value,
-        batimentos: document.getElementById('batimentos').value,
-        glicemia: document.getElementById('glicemia').value,
-        observacoesMedicas: "" // Inicialmente vazio
-    };
+// Coleta os dados do formulário
+const paciente = {
+    nome: document.getElementById('nome').value,
+    matricula: document.getElementById('matricula').value, // Novo campo
+    dataNascimento: document.getElementById('dataNascimento').value,
+    forcaOperativa: document.getElementById('forcaOperativa').value,
+    peso: document.getElementById('peso').value,
+    altura: document.getElementById('altura').value,
+    circAbdominal: document.getElementById('circAbdominal').value,
+    pressaoArterial: document.getElementById('pressaoArterial').value,
+    batimentos: document.getElementById('batimentos').value,
+    glicemia: document.getElementById('glicemia').value,
+    observacoesMedicas: "" // Inicialmente vazio
+};
 
     // Calcula a idade
     paciente.idade = calcularIdade(paciente.dataNascimento);
@@ -60,6 +61,7 @@ function atualizarTabela() {
         const newRow = tabela.insertRow();
         newRow.innerHTML = `
             <td>${paciente.nome}</td>
+            <td>${paciente.matricula}</td> <!-- Novo campo -->
             <td>${paciente.idade}</td>
             <td>${paciente.forcaOperativa}</td>
             <td class="acoes">
@@ -103,6 +105,7 @@ function abrirModalEditar(index) {
 
     // Preenche os campos de texto
     document.getElementById('editarNomeTexto').textContent = pacienteEditando.nome;
+    document.getElementById('editarMatriculaTexto').textContent = pacienteEditando.matricula; // Novo campo
     document.getElementById('editarDataNascimentoTexto').textContent = pacienteEditando.dataNascimento;
     document.getElementById('editarForcaOperativaTexto').textContent = pacienteEditando.forcaOperativa;
     document.getElementById('editarPesoTexto').textContent = pacienteEditando.peso;
@@ -131,7 +134,7 @@ function editarCampo(idCampo) {
 function salvarEdicao() {
     // Atualiza os campos editados
     const campos = [
-        'editarNome', 'editarDataNascimento', 'editarForcaOperativa',
+        'editarNome', 'editarMatricula', 'editarDataNascimento', 'editarForcaOperativa',
         'editarPeso', 'editarAltura', 'editarCircAbdominal',
         'editarPressaoArterial', 'editarBatimentos', 'editarGlicemia'
     ];
@@ -159,7 +162,6 @@ function salvarEdicao() {
     atualizarTabela();
     document.getElementById('modalEditar').style.display = 'none';
 }
-
 function abrirModalExcluir(index) {
     const modal = document.getElementById('modalExcluir');
     modal.style.display = 'flex';

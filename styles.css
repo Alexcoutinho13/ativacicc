@@ -118,7 +118,7 @@ button {
 }
 
 button:hover {
-    background-color:#1b682d ;
+    background-color: #1b682d;
 }
 
 /* Estilos da Tabela */
@@ -147,6 +147,11 @@ th {
 
 tr:hover {
     background-color: #f1f1f1;
+}
+
+/* Ajuste para a coluna de matrícula */
+table th:nth-child(2), table td:nth-child(2) {
+    width: 120px; /* Largura fixa para a coluna de matrícula */
 }
 
 /* Botões de Ação */
@@ -283,13 +288,14 @@ tr:hover {
         font-weight: bold;
     }
 }
+
 #detalhesPaciente {
     word-break: break-all;
 }
+
 #detalhesPaciente p {
     margin: 5px;
 }
-
 
 /* Paginação */
 .paginacao {
