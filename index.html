@@ -107,16 +107,18 @@
         <div class="modal-content">
             <span class="close">&times;</span>
             <h2>Editar Paciente</h2>
-            <div class="coluna">
-                <p><strong>Nome:</strong> <span id="editarNomeTexto"></span> <i class="fas fa-edit" onclick="editarCampo('editarNome')"></i></p>
-                <input type="text" id="editarNome" class="editar-campo" style="display: none;">
-            
-                <p><strong>Matrícula:</strong> <span id="editarMatriculaTexto"></span> <i class="fas fa-edit" onclick="editarCampo('editarMatricula')"></i></p>
-                <input type="text" id="editarMatricula" class="editar-campo" style="display: none;">
-            
-                <p><strong>Data de Nascimento:</strong> <span id="editarDataNascimentoTexto"></span> <i class="fas fa-edit" onclick="editarCampo('editarDataNascimento')"></i></p>
-                <input type="date" id="editarDataNascimento" class="editar-campo" style="display: none;">
-
+            <div class="editar-colunas">
+                <!-- Coluna 1 -->
+                <div class="coluna">
+                    <p><strong>Nome:</strong> <span id="editarNomeTexto"></span> <i class="fas fa-edit" onclick="editarCampo('editarNome')"></i></p>
+                    <input type="text" id="editarNome" class="editar-campo" style="display: none;">
+    
+                    <p><strong>Matrícula:</strong> <span id="editarMatriculaTexto"></span> <i class="fas fa-edit" onclick="editarCampo('editarMatricula')"></i></p>
+                    <input type="text" id="editarMatricula" class="editar-campo" style="display: none;">
+    
+                    <p><strong>Data de Nascimento:</strong> <span id="editarDataNascimentoTexto"></span> <i class="fas fa-edit" onclick="editarCampo('editarDataNascimento')"></i></p>
+                    <input type="date" id="editarDataNascimento" class="editar-campo" style="display: none;">
+    
                     <p><strong>Força Operativa:</strong> <span id="editarForcaOperativaTexto"></span> <i class="fas fa-edit" onclick="editarCampo('editarForcaOperativa')"></i></p>
                     <select id="editarForcaOperativa" class="editar-campo" style="display: none;">
                         <option value="">Selecione uma opção</option>
@@ -127,30 +129,30 @@
                         <option value="Polícia Penal">Polícia Penal</option>
                         <option value="Outros">Outros</option>
                     </select>
-
+    
                     <p><strong>Peso:</strong> <span id="editarPesoTexto"></span> kg <i class="fas fa-edit" onclick="editarCampo('editarPeso')"></i></p>
                     <input type="number" id="editarPeso" class="editar-campo" style="display: none;">
-
+    
                     <p><strong>Altura:</strong> <span id="editarAlturaTexto"></span> cm <i class="fas fa-edit" onclick="editarCampo('editarAltura')"></i></p>
                     <input type="number" id="editarAltura" class="editar-campo" style="display: none;">
                 </div>
-
+    
                 <!-- Coluna 2 -->
                 <div class="coluna">
                     <p><strong>Circunferência Abdominal:</strong> <span id="editarCircAbdominalTexto"></span> cm <i class="fas fa-edit" onclick="editarCampo('editarCircAbdominal')"></i></p>
                     <input type="number" id="editarCircAbdominal" class="editar-campo" style="display: none;">
-
+    
                     <p><strong>Pressão Arterial:</strong> <span id="editarPressaoArterialTexto"></span> <i class="fas fa-edit" onclick="editarCampo('editarPressaoArterial')"></i></p>
                     <input type="text" id="editarPressaoArterial" class="editar-campo" style="display: none;">
-
+    
                     <p><strong>Batimentos Cardíacos:</strong> <span id="editarBatimentosTexto"></span> bpm <i class="fas fa-edit" onclick="editarCampo('editarBatimentos')"></i></p>
                     <input type="number" id="editarBatimentos" class="editar-campo" style="display: none;">
-
+    
                     <p><strong>Glicemia:</strong> <span id="editarGlicemiaTexto"></span> mg/dL <i class="fas fa-edit" onclick="editarCampo('editarGlicemia')"></i></p>
                     <input type="number" id="editarGlicemia" class="editar-campo" style="display: none;">
                 </div>
             </div>
-            <button onclick="salvarEdicao()">Salvar Alterações</button>
+            <button onclick="salvarEdicao()" style="margin-top: 20px;">Salvar Alterações</button>
         </div>
     </div>
 
