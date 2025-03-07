@@ -44,7 +44,6 @@ header {
 }
 
 .data-column {
-    width: 100%;
     background-color: #fff;
     padding: 20px;
     border-radius: 10px;
@@ -206,6 +205,7 @@ table th:nth-child(2), table td:nth-child(2) {
     background-color: rgba(0, 0, 0, 0.5);
     justify-content: center;
     align-items: center;
+
 }
 
 .modal-content {
@@ -215,6 +215,7 @@ table th:nth-child(2), table td:nth-child(2) {
     width: 90%;
     max-width: 800px;
     position: relative;
+
 }
 
 .modal-content .close {
