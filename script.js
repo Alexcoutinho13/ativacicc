@@ -1,5 +1,7 @@
 let pacientes = []; // Array para armazenar os pacientes
 let pacienteEditando = null; // Armazena o paciente sendo editado
+let paginaAtual = 1; // Página atual da paginação
+const pacientesPorPagina = 10; // Número de pacientes por página
 
 document.getElementById('avaliacaoForm').addEventListener('submit', function (event) {
     event.preventDefault(); // Impede o envio do formulário
@@ -24,6 +26,9 @@ document.getElementById('avaliacaoForm').addEventListener('submit', function (ev
     // Adiciona o paciente ao array
     pacientes.push(paciente);
 
+    // Ordena os pacientes por nome
+    pacientes.sort((a, b) => a.nome.localeCompare(b.nome));
+
     // Atualiza a tabela
     atualizarTabela();
 
@@ -46,20 +51,50 @@ function atualizarTabela() {
     const tabela = document.getElementById('tabelaPacientes').getElementsByTagName('tbody')[0];
     tabela.innerHTML = ""; // Limpa a tabela
 
-    pacientes.forEach((paciente, index) => {
+    // Filtra os pacientes para a página atual
+    const inicio = (paginaAtual - 1) * pacientesPorPagina;
+    const fim = inicio + pacientesPorPagina;
+    const pacientesPagina = pacientes.slice(inicio, fim);
+
+    pacientesPagina.forEach((paciente, index) => {
         const newRow = tabela.insertRow();
         newRow.innerHTML = `
             <td>${paciente.nome}</td>
             <td>${paciente.idade}</td>
             <td>${paciente.forcaOperativa}</td>
             <td class="acoes">
-                <button class="editar" onclick="abrirModalEditar(${index})"><i class="fas fa-edit"></i></button>
-                <button class="excluir" onclick="abrirModalExcluir(${index})"><i class="fas fa-trash"></i></button>
-                <button class="detalhar" onclick="abrirModalDetalhar(${index})"><i class="fas fa-info-circle"></i></button>
-                <button class="medico" onclick="abrirModalInfoMedicas(${index})"><i class="fas fa-user-md"></i></button>
+                <button class="editar" onclick="abrirModalEditar(${inicio + index})"><i class="fas fa-edit"></i></button>
+                <button class="excluir" onclick="abrirModalExcluir(${inicio + index})"><i class="fas fa-trash"></i></button>
+                <button class="detalhar" onclick="abrirModalDetalhar(${inicio + index})"><i class="fas fa-info-circle"></i></button>
+                <button class="medico" onclick="abrirModalInfoMedicas(${inicio + index})"><i class="fas fa-user-md"></i></button>
             </td>
         `;
     });
+
+    // Atualiza a paginação
+    atualizarPaginacao();
+}
+
+function atualizarPaginacao() {
+    const paginacao = document.querySelector('.paginacao');
+    paginacao.innerHTML = ""; // Limpa a paginação
+
+    const totalPaginas = Math.ceil(pacientes.length / pacientesPorPagina);
+
+    for (let i = 1; i <= totalPaginas; i++) {
+        const botao = document.createElement('button');
+        botao.textContent = i;
+        botao.addEventListener('click', () => {
+            paginaAtual = i;
+            atualizarTabela();
+        });
+
+        if (i === paginaAtual) {
+            botao.classList.add('ativo');
+        }
+
+        paginacao.appendChild(botao);
+    }
 }
 
 // Funções para abrir modais
@@ -113,6 +148,12 @@ function salvarEdicao() {
             pacienteEditando[campo.replace('editar', '').toLowerCase()] = campoInput.value;
         }
     });
+
+    // Recalcula a idade
+    pacienteEditando.idade = calcularIdade(pacienteEditando.dataNascimento);
+
+    // Ordena os pacientes por nome
+    pacientes.sort((a, b) => a.nome.localeCompare(b.nome));
 
     // Atualiza a tabela e fecha o modal
     atualizarTabela();
@@ -170,6 +211,34 @@ function abrirModalInfoMedicas(index) {
         atualizarTabela();
         modal.style.display = 'none';
     };
+}
+
+
+// Função para buscar pacientes pelo nome
+function filtrarPacientes() {
+    const termo = document.getElementById('busca').value.toLowerCase();
+    const pacientesFiltrados = pacientes.filter(paciente =>
+        paciente.nome.toLowerCase().includes(termo)
+    );
+
+    // Atualiza a tabela com os pacientes filtrados
+    const tabela = document.getElementById('tabelaPacientes').getElementsByTagName('tbody')[0];
+    tabela.innerHTML = "";
+
+    pacientesFiltrados.forEach((paciente, index) => {
+        const newRow = tabela.insertRow();
+        newRow.innerHTML = `
+            <td>${paciente.nome}</td>
+            <td>${paciente.idade}</td>
+            <td>${paciente.forcaOperativa}</td>
+            <td class="acoes">
+                <button class="editar" onclick="abrirModalEditar(${index})"><i class="fas fa-edit"></i></button>
+                <button class="excluir" onclick="abrirModalExcluir(${index})"><i class="fas fa-trash"></i></button>
+                <button class="detalhar" onclick="abrirModalDetalhar(${index})"><i class="fas fa-info-circle"></i></button>
+                <button class="medico" onclick="abrirModalInfoMedicas(${index})"><i class="fas fa-user-md"></i></button>
+            </td>
+        `;
+    });
 }
 
 // Função para imprimir informações
@@ -250,8 +319,9 @@ function imprimirInformacoes() {
 // Fechar modais ao clicar no "X"
 document.querySelectorAll('.close').forEach(close => {
     close.addEventListener('click', () => {
-        document.querySelectorAll('.modal').forEach(modal => {
+        const modal = close.closest('.modal');
+        if (modal) {
             modal.style.display = 'none';
-        });
+        }
     });
 });

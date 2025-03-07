@@ -18,19 +18,12 @@ body {
 
 header {
     text-align: center;
-    margin-bottom: 30px;
+    margin-bottom: 10px;
 }
 
 .logo {
-    max-width: 150px;
+    max-width: 100%;
     margin-bottom: 15px;
-}
-
-h1 {
-    color: #007bff;
-    margin: 0;
-    font-size: 28px;
-    font-weight: 600;
 }
 
 .columns {
@@ -41,8 +34,8 @@ h1 {
 .form-column {
     flex: 1;
     max-width: 25%;
-    background-color: #f9f9f9;
-    padding: 20px;
+    background-color: #efeff1;
+    padding: 10px;
     border-radius: 10px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
@@ -51,7 +44,7 @@ h1 {
     flex: 3;
     max-width: 75%;
     background-color: #fff;
-    padding: 20px;
+    padding: 10px;
     border-radius: 10px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
@@ -59,8 +52,8 @@ h1 {
 fieldset {
     border: 1px solid #ddd;
     border-radius: 8px;
-    padding: 15px;
-    margin-bottom: 20px;
+    padding: 10px;
+    margin-bottom: 10px;
     background-color: #fff;
 }
 
@@ -76,7 +69,7 @@ legend {
 
 label {
     display: block;
-    margin-bottom: 8px;
+    margin-bottom: 4px;
     color: #555;
     font-weight: 500;
 }
@@ -88,7 +81,7 @@ textarea,
 select {
     width: 100%;
     padding: 10px;
-    margin-bottom: 15px;
+    margin-bottom: 10px;
     border: 1px solid #ccc;
     border-radius: 6px;
     box-sizing: border-box;
@@ -108,12 +101,13 @@ select:focus {
 textarea {
     resize: vertical;
     min-height: 100px;
+    white-space: pre-wrap; /* Mantém as quebras de linha */
 }
 
 button {
     width: 100%;
     padding: 12px;
-    background-color: #007bff;
+    background-color: #28a745;
     color: white;
     border: none;
     border-radius: 6px;
@@ -124,7 +118,7 @@ button {
 }
 
 button:hover {
-    background-color: #0056b3;
+    background-color:#1b682d ;
 }
 
 /* Estilos da Tabela */
@@ -142,6 +136,7 @@ th, td {
     padding: 12px;
     text-align: left;
     border-bottom: 1px solid #ddd;
+    border-left: 1px solid #ddd;
 }
 
 th {
@@ -211,7 +206,7 @@ tr:hover {
     padding: 20px;
     border-radius: 8px;
     width: 90%;
-    max-width: 500px;
+    max-width: 800px;
     position: relative;
 }
 
@@ -287,4 +282,39 @@ tr:hover {
         background-color: #f2f2f2;
         font-weight: bold;
     }
+}
+#detalhesPaciente {
+    word-break: break-all;
+}
+#detalhesPaciente p {
+    margin: 5px;
+}
+
+
+/* Paginação */
+.paginacao {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+    gap: 10px;
+}
+
+.paginacao button {
+    padding: 8px 12px;
+    border: 1px solid #007bff;
+    border-radius: 4px;
+    background-color: #fff;
+    color: #007bff;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.paginacao button:hover {
+    background-color: #007bff;
+    color: #fff;
+}
+
+.paginacao button.ativo {
+    background-color: #007bff;
+    color: #fff;
 }
