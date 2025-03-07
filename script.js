@@ -87,7 +87,7 @@ function atualizarTabela() {
             <td>${paciente.forcaOperativa}</td>
             <td>
                 <button class="toggle-btn ${paciente.status ? 'ligado' : 'desligado'}" onclick="alternarStatus(${inicio + index})">
-                    ${paciente.status ? 'Ligado' : 'Desligado'}
+                    ${paciente.status ? 'Sim' : 'Não'}
                 </button>
             </td>
             <td class="acoes">
@@ -167,22 +167,28 @@ function editarCampo(idCampo) {
 function salvarEdicao() {
     // Atualiza os campos editados
     const campos = [
-        'editarNome', 'editarMatricula', 'editarDataNascimento', 'editarForcaOperativa',
-        'editarPeso', 'editarAltura', 'editarCircAbdominal',
-        'editarPressaoArterial', 'editarBatimentos', 'editarGlicemia'
+        { id: 'editarNome', chave: 'nome' },
+        { id: 'editarMatricula', chave: 'matricula' },
+        { id: 'editarDataNascimento', chave: 'dataNascimento' },
+        { id: 'editarForcaOperativa', chave: 'forcaOperativa' },
+        { id: 'editarPeso', chave: 'peso' },
+        { id: 'editarAltura', chave: 'altura' },
+        { id: 'editarCircAbdominal', chave: 'circAbdominal' },
+        { id: 'editarPressaoArterial', chave: 'pressaoArterial' },
+        { id: 'editarBatimentos', chave: 'batimentos' },
+        { id: 'editarGlicemia', chave: 'glicemia' }
     ];
 
-    campos.forEach(campo => {
-        const campoInput = document.getElementById(campo);
+    campos.forEach(({ id, chave }) => {
+        const campoInput = document.getElementById(id);
         if (campoInput.style.display !== 'none') {
-            const campoTexto = document.getElementById(`${campo}Texto`);
+            const campoTexto = document.getElementById(`${id}Texto`);
             campoTexto.textContent = campoInput.value;
             campoTexto.style.display = 'inline-block';
             campoInput.style.display = 'none';
 
             // Atualiza o paciente no array
-            const campoChave = campo.replace('editar', '').toLowerCase();
-            pacienteEditando[campoChave] = campoInput.value;
+            pacienteEditando[chave] = campoInput.value;
         }
     });
 
@@ -270,7 +276,7 @@ function filtrarPacientes() {
             <td>${paciente.forcaOperativa}</td>
             <td>
                 <button class="toggle-btn ${paciente.status ? 'ligado' : 'desligado'}" onclick="alternarStatus(${index})">
-                    ${paciente.status ? 'Ligado' : 'Desligado'}
+                    ${paciente.status ? 'Sim' : 'Não'}
                 </button>
             </td>
             <td class="acoes">
