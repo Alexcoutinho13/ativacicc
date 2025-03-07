@@ -22,6 +22,11 @@
             <!-- Campo de busca -->
             <div class="busca-container">
                 <input type="text" id="busca" placeholder="Buscar paciente pelo nome..." oninput="filtrarPacientes()">
+                <div class="filtro-toggle">
+                    <button id="filtroTodos" class="filtro-btn ativo" onclick="filtrarPorToggle('todos')">Todos</button>
+                    <button id="filtroLigado" class="filtro-btn" onclick="filtrarPorToggle('ligado')">Participantes</button>
+                    <button id="filtroDesligado" class="filtro-btn" onclick="filtrarPorToggle('desligado')">Não Participantes</button>
+                </div>
             </div>
             <table id="tabelaPacientes">
                 <thead>
@@ -201,6 +206,12 @@
             </form>
         </div>
     </div>
+    <footer>
+        <div class="footer-content">
+            <p>Centro Integrado de Comando e Controle - 2ª REISP / SESDS-PB</p>
+            <p>&copy; 2023 - Todos os direitos reservados</p>
+        </div>
+    </footer>
 
     <script src="script.js"></script>
 </body>

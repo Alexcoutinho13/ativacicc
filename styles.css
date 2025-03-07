@@ -382,3 +382,54 @@ table th:nth-child(2), table td:nth-child(2) {
     background-color: #007bff;
     color: #fff;
 }
+
+/* Estilos para os botões de filtro */
+.filtro-toggle {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.filtro-btn {
+    padding: 8px 12px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    transition: background-color 0.3s ease;
+    background-color: #f1f1f1; /* Cor de fundo padrão */
+    color: #333; /* Cor do texto padrão */
+}
+
+.filtro-btn.ativo {
+    background-color: #436488; /* Cor de fundo quando ativo */
+    color: white; /* Cor do texto quando ativo */
+}
+
+.filtro-btn:hover {
+    opacity: 0.9;
+}
+
+/* Estilos para o rodapé */
+footer {
+    background-color: #436488; /* Cor de fundo do rodapé */
+    color: white; /* Cor do texto */
+    padding: 20px 0; /* Espaçamento interno */
+    text-align: center; /* Centraliza o conteúdo */
+    font-size: 14px; /* Tamanho da fonte */
+    border-top: 2px solid #2c3e50; /* Borda superior */
+    margin-top: 20px; /* Espaçamento acima do rodapé */
+}
+
+footer .footer-content p {
+    margin: 5px 0; /* Espaçamento entre os parágrafos */
+}
+
+footer .footer-content p:first-child {
+    font-weight: bold; /* Negrito para o nome do CICC */
+}
+
+footer .footer-content p:last-child {
+    font-size: 12px; /* Tamanho menor para o texto de direitos reservados */
+}

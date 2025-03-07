@@ -2,6 +2,7 @@ let pacientes = []; // Array para armazenar os pacientes
 let pacienteEditando = null; // Armazena o paciente sendo editado
 let paginaAtual = 1; // Página atual da paginação
 const pacientesPorPagina = 10; // Número de pacientes por página
+let filtroAtual = 'todos'; // Filtro atual: 'todos', 'ligado', 'desligado'
 
 // Função para abrir o modal do formulário
 document.getElementById('abrirModalFormulario').addEventListener('click', function () {
@@ -73,10 +74,18 @@ function atualizarTabela() {
     const tabela = document.getElementById('tabelaPacientes').getElementsByTagName('tbody')[0];
     tabela.innerHTML = ""; // Limpa a tabela
 
+    // Filtra os pacientes com base no filtro atual
+    let pacientesFiltrados = pacientes;
+    if (filtroAtual === 'ligado') {
+        pacientesFiltrados = pacientes.filter(paciente => paciente.status);
+    } else if (filtroAtual === 'desligado') {
+        pacientesFiltrados = pacientes.filter(paciente => !paciente.status);
+    }
+
     // Filtra os pacientes para a página atual
     const inicio = (paginaAtual - 1) * pacientesPorPagina;
     const fim = inicio + pacientesPorPagina;
-    const pacientesPagina = pacientes.slice(inicio, fim);
+    const pacientesPagina = pacientesFiltrados.slice(inicio, fim);
 
     pacientesPagina.forEach((paciente, index) => {
         const newRow = tabela.insertRow();
@@ -100,7 +109,7 @@ function atualizarTabela() {
     });
 
     // Atualiza a paginação
-    atualizarPaginacao();
+    atualizarPaginacao(pacientesFiltrados.length);
 }
 
 // Função para alternar o status do botão toggle
@@ -110,11 +119,11 @@ function alternarStatus(index) {
     atualizarTabela(); // Atualiza a tabela para refletir o novo estado
 }
 
-function atualizarPaginacao() {
+function atualizarPaginacao(totalPacientes) {
     const paginacao = document.querySelector('.paginacao');
     paginacao.innerHTML = ""; // Limpa a paginação
 
-    const totalPaginas = Math.ceil(pacientes.length / pacientesPorPagina);
+    const totalPaginas = Math.ceil(totalPacientes / pacientesPorPagina);
 
     for (let i = 1; i <= totalPaginas; i++) {
         const botao = document.createElement('button');
@@ -130,6 +139,17 @@ function atualizarPaginacao() {
 
         paginacao.appendChild(botao);
     }
+}
+
+// Função para filtrar pacientes pelo toggle
+function filtrarPorToggle(filtro) {
+    filtroAtual = filtro;
+    paginaAtual = 1; // Reseta a página para a primeira
+    atualizarTabela();
+
+    // Atualiza o estado dos botões de filtro
+    document.querySelectorAll('.filtro-btn').forEach(btn => btn.classList.remove('ativo'));
+    document.getElementById(`filtro${filtro.charAt(0).toUpperCase() + filtro.slice(1)}`).classList.add('ativo');
 }
 
 // Funções para abrir modais
