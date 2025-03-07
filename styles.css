@@ -34,7 +34,7 @@ header {
 .form-column {
     flex: 1;
     max-width: 25%;
-    background-color: #efeff1;
+    background-color: #f3f3f7;
     padding: 10px;
     border-radius: 10px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
