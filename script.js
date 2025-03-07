@@ -37,7 +37,8 @@ document.getElementById('avaliacaoForm').addEventListener('submit', function (ev
         pressaoArterial: document.getElementById('pressaoArterial').value,
         batimentos: document.getElementById('batimentos').value,
         glicemia: document.getElementById('glicemia').value,
-        observacoesMedicas: "" // Inicialmente vazio
+        observacoesMedicas: "", // Inicialmente vazio
+        status: false // Status inicial desligado
     };
 
     // Calcula a idade
@@ -84,6 +85,11 @@ function atualizarTabela() {
             <td>${paciente.matricula}</td>
             <td>${paciente.idade}</td>
             <td>${paciente.forcaOperativa}</td>
+            <td>
+                <button class="toggle-btn ${paciente.status ? 'ligado' : 'desligado'}" onclick="alternarStatus(${inicio + index})">
+                    ${paciente.status ? 'Ligado' : 'Desligado'}
+                </button>
+            </td>
             <td class="acoes">
                 <button class="editar" onclick="abrirModalEditar(${inicio + index})"><i class="fas fa-edit"></i></button>
                 <button class="excluir" onclick="abrirModalExcluir(${inicio + index})"><i class="fas fa-trash"></i></button>
@@ -95,6 +101,13 @@ function atualizarTabela() {
 
     // Atualiza a paginação
     atualizarPaginacao();
+}
+
+// Função para alternar o status do botão toggle
+function alternarStatus(index) {
+    const paciente = pacientes[index];
+    paciente.status = !paciente.status; // Alterna entre true e false
+    atualizarTabela(); // Atualiza a tabela para refletir o novo estado
 }
 
 function atualizarPaginacao() {
@@ -168,7 +181,8 @@ function salvarEdicao() {
             campoInput.style.display = 'none';
 
             // Atualiza o paciente no array
-            pacienteEditando[campo.replace('editar', '').toLowerCase()] = campoInput.value;
+            const campoChave = campo.replace('editar', '').toLowerCase();
+            pacienteEditando[campoChave] = campoInput.value;
         }
     });
 
@@ -254,6 +268,11 @@ function filtrarPacientes() {
             <td>${paciente.matricula}</td>
             <td>${paciente.idade}</td>
             <td>${paciente.forcaOperativa}</td>
+            <td>
+                <button class="toggle-btn ${paciente.status ? 'ligado' : 'desligado'}" onclick="alternarStatus(${index})">
+                    ${paciente.status ? 'Ligado' : 'Desligado'}
+                </button>
+            </td>
             <td class="acoes">
                 <button class="editar" onclick="abrirModalEditar(${index})"><i class="fas fa-edit"></i></button>
                 <button class="excluir" onclick="abrirModalExcluir(${index})"><i class="fas fa-trash"></i></button>
