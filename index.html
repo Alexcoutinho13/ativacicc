@@ -13,7 +13,7 @@
         <!-- Cabeçalho com Logo -->
         <header>
             <img src="logo.png" alt="Logo ATIVA CICC" class="logo">
-            <button id="abrirModalFormulario" class="btn-inserir-paciente">Inserir Novo Paciente</button>
+            <button id="abrirModalFormulario" class="btn-inserir-paciente">Inserir Novo Paciente      <i class="fa fa-plus" aria-hidden="true"></i></button>
         </header>
 
         <!-- Coluna da Tabela de Dados -->
@@ -99,18 +99,19 @@
                             <input type="number" id="circAbdominal" name="circAbdominal" required>
                         </fieldset>
 
-                        <fieldset>
-                            <legend>Avaliação Clínica</legend>
-                            <label for="pressaoArterial">Pressão Arterial (mmHg):</label>
-                            <input type="text" id="pressaoArterial" name="pressaoArterial" placeholder="Ex: 120/80" required>
 
-                            <label for="batimentos">Batimentos Cardíacos (bpm):</label>
-                            <input type="number" id="batimentos" name="batimentos" required>
-
-                            <label for="glicemia">Glicemia (mg/dL):</label>
-                            <input type="number" id="glicemia" name="glicemia" required>
-                        </fieldset>
                     </div>
+                    <fieldset>
+                        <legend>Avaliação Clínica</legend>
+                        <label for="pressaoArterial">Pressão Arterial (mmHg):</label>
+                        <input type="text" id="pressaoArterial" name="pressaoArterial" placeholder="Ex: 120/80" required>
+
+                        <label for="batimentos">Batimentos Cardíacos (bpm):</label>
+                        <input type="number" id="batimentos" name="batimentos" required>
+
+                        <label for="glicemia">Glicemia (mg/dL):</label>
+                        <input type="number" id="glicemia" name="glicemia" required>
+                    </fieldset>
                 </div>
                 <button type="submit">Enviar Avaliação</button>
             </form>
