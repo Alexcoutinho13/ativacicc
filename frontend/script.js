@@ -6,28 +6,6 @@ let filtroAtual = 'todos';
 
 const API_URL = '/pacientes'; // Relativo, funciona localmente e no Render
 
-// Evento para exportar a planilha
-document.getElementById('exportarPlanilha').addEventListener('click', async () => {
-    try {
-        const response = await fetch('/exportar-pacientes');
-        if (!response.ok) throw new Error('Erro ao exportar planilha');
-        
-        const blob = await response.blob();
-        const url = window.URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = 'pacientes.xlsx';
-        document.body.appendChild(a);
-        a.click();
-        a.remove();
-        window.URL.revokeObjectURL(url);
-        
-        showAlert('Planilha exportada com sucesso!');
-    } catch (error) {
-        showAlert(error.message || 'Erro ao exportar planilha', 'error');
-    }
-});
-
 // Função para exibir alertas
 function showAlert(message, type = 'success') {
     const alertDiv = document.createElement('div');

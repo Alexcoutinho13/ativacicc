@@ -2,13 +2,12 @@ const express = require('express');
 const sqlite3 = require('sqlite3').verbose();
 const cors = require('cors');
 const path = require('path');
-const ExcelJS = require('exceljs');  // Importe a biblioteca
 const app = express();
 
 // Middleware
 app.use(express.json());
 app.use(cors());
-app.use(express.static(path.join(__dirname, '../frontend')));
+app.use(express.static(path.join(__dirname, '../frontend'))); // Serve os arquivos estáticos do frontend
 
 // Conexão com o banco SQLite
 const db = new sqlite3.Database('./pacientes.db', (err) => {
@@ -19,7 +18,7 @@ const db = new sqlite3.Database('./pacientes.db', (err) => {
     }
 });
 
-// Criação da tabela de pacientes (mantido como estava)
+// Criação da tabela de pacientes
 db.run(`
     CREATE TABLE IF NOT EXISTS pacientes (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -38,7 +37,7 @@ db.run(`
     )
 `);
 
-// Endpoint para cadastrar um paciente (mantido)
+// Endpoint para cadastrar um paciente
 app.post('/pacientes', (req, res) => {
     const {
         nome, matricula, dataNascimento, forcaOperativa, peso, altura,
@@ -64,7 +63,7 @@ app.post('/pacientes', (req, res) => {
     stmt.finalize();
 });
 
-// Endpoint para listar todos os pacientes (mantido)
+// Endpoint para listar todos os pacientes
 app.get('/pacientes', (req, res) => {
     db.all('SELECT * FROM pacientes', [], (err, rows) => {
         if (err) {
@@ -75,7 +74,7 @@ app.get('/pacientes', (req, res) => {
     });
 });
 
-// Endpoint para atualizar um paciente (mantido)
+// Endpoint para atualizar um paciente
 app.put('/pacientes/:id', (req, res) => {
     const { id } = req.params;
     const {
@@ -103,7 +102,7 @@ app.put('/pacientes/:id', (req, res) => {
     stmt.finalize();
 });
 
-// Endpoint para excluir um paciente (mantido)
+// Endpoint para excluir um paciente
 app.delete('/pacientes/:id', (req, res) => {
     const { id } = req.params;
     db.run('DELETE FROM pacientes WHERE id = ?', id, (err) => {
@@ -115,57 +114,7 @@ app.delete('/pacientes/:id', (req, res) => {
     });
 });
 
-// Novo endpoint para exportar pacientes como planilha
-app.get('/exportar-pacientes', (req, res) => {
-    db.all('SELECT * FROM pacientes', [], async (err, rows) => {
-        if (err) {
-            res.status(500).json({ error: err.message });
-            return;
-        }
-
-        // Cria uma nova planilha
-        const workbook = new ExcelJS.Workbook();
-        const worksheet = workbook.addWorksheet('Pacientes');
-
-        // Define as colunas da planilha
-        worksheet.columns = [
-            { header: 'ID', key: 'id', width: 10 },
-            { header: 'Nome', key: 'nome', width: 30 },
-            { header: 'Matrícula', key: 'matricula', width: 15 },
-            { header: 'Data de Nascimento', key: 'dataNascimento', width: 15 },
-            { header: 'Força Operativa', key: 'forcaOperativa', width: 20 },
-            { header: 'Peso (kg)', key: 'peso', width: 10 },
-            { header: 'Altura (cm)', key: 'altura', width: 10 },
-            { header: 'Circ. Abdominal (cm)', key: 'circAbdominal', width: 15 },
-            { header: 'Pressão Arterial', key: 'pressaoArterial', width: 15 },
-            { header: 'Batimentos (bpm)', key: 'batimentos', width: 15 },
-            { header: 'Glicemia (mg/dL)', key: 'glicemia', width: 15 },
-            { header: 'Observações Médicas', key: 'observacoesMedicas', width: 40 },
-            { header: 'Status', key: 'status', width: 10 }
-        ];
-
-        // Adiciona os dados dos pacientes
-        worksheet.addRows(rows);
-
-        // Estiliza o cabeçalho
-        worksheet.getRow(1).font = { bold: true };
-        worksheet.getRow(1).fill = {
-            type: 'pattern',
-            pattern: 'solid',
-            fgColor: { argb: 'FFDDDDDD' }
-        };
-
-        // Configura o response para download
-        res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        res.setHeader('Content-Disposition', 'attachment; filename="pacientes.xlsx"');
-
-        // Envia a planilha como buffer
-        await workbook.xlsx.write(res);
-        res.end();
-    });
-});
-
-// Rota padrão para o frontend (mantido)
+// Rota padrão para o frontend
 app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, '../frontend', 'index.html'));
 });
