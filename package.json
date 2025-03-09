@@ -9,7 +9,8 @@
   "dependencies": {
     "express": "^4.18.2",
     "sqlite3": "^5.1.7",
-    "cors": "^2.8.5"
+    "cors": "^2.8.5",
+    "exceljs": "^4.4.0"  // Adicionado aqui
   },
   "devDependencies": {
     "node-gyp": "^10.2.0"

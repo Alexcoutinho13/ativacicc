@@ -474,3 +474,20 @@ footer .footer-content p:last-child {
 .alert .close-alert:hover {
     opacity: 0.8;
 }
+
+.btn-exportar {
+    padding: 10px 20px;
+    background-color: #17a2b8;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 500;
+    transition: background-color 0.3s ease;
+    margin-left: 10px;
+}
+
+.btn-exportar:hover {
+    background-color: #138496;
+}
