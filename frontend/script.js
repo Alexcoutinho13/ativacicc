@@ -302,9 +302,15 @@ function abrirModalDetalhar(id) {
         <p><strong>Batimentos Cardíacos:</strong> ${paciente.batimentos} bpm</p>
         <p><strong>Glicemia:</strong> ${paciente.glicemia} mg/dL</p>
         <p><strong>Observações Médicas:</strong> ${paciente.observacoesMedicas}</p>
+        <button id="imprimirDetalhes" class="btn-imprimir">Imprimir</button>
     `;
     document.getElementById('detalhesPaciente').innerHTML = detalhes;
     document.getElementById('modalDetalhar').style.display = 'flex';
+
+    // Adicionar evento ao botão de impressão
+    document.getElementById('imprimirDetalhes').addEventListener('click', () => {
+        imprimirInformacoes(paciente);
+    });
 }
 
 function abrirModalInfoMedicas(id) {
@@ -374,8 +380,12 @@ function atualizarTabelaComFiltro(pacientesFiltrados) {
     atualizarPaginacao(pacientesFiltrados.length);
 }
 
-function imprimirInformacoes() {
-    const paciente = pacienteEditando;
+function imprimirInformacoes(paciente) {
+    if (!paciente) {
+        showAlert('Nenhum paciente selecionado para impressão!', 'error');
+        return;
+    }
+
     const conteudo = `
         <h2>Informações do Paciente</h2>
         <table>
@@ -389,7 +399,7 @@ function imprimirInformacoes() {
             <tr><td>Pressão Arterial</td><td>${paciente.pressaoArterial}</td></tr>
             <tr><td>Batimentos Cardíacos</td><td>${paciente.batimentos} bpm</td></tr>
             <tr><td>Glicemia</td><td>${paciente.glicemia} mg/dL</td></tr>
-            <tr><td>Observações Médicas</td><td>${paciente.observacoesMedicas}</td></tr>
+            <tr><td>Observações Médicas</td><td>${paciente.observacoesMedicas || 'Nenhuma'}</td></tr>
         </table>
     `;
 
