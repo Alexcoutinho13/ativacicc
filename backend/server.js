@@ -2,6 +2,7 @@ const express = require('express');
 const sqlite3 = require('sqlite3').verbose();
 const cors = require('cors');
 const path = require('path');
+const fs = require('fs'); // Para verificar a existência do arquivo
 const app = express();
 
 // Middleware
@@ -10,15 +11,16 @@ app.use(cors());
 app.use(express.static(path.join(__dirname, '../frontend'))); // Serve os arquivos estáticos do frontend
 
 // Conexão com o banco SQLite
-const db = new sqlite3.Database('./pacientes.db', (err) => {
+const dbPath = path.join(__dirname, 'pacientes.db'); // Caminho absoluto no Render
+const db = new sqlite3.Database(dbPath, (err) => {
     if (err) {
         console.error('Erro ao conectar ao banco de dados:', err.message);
     } else {
-        console.log('Conectado ao banco SQLite');
+        console.log('Conectado ao banco SQLite em:', dbPath);
     }
 });
 
-// Criação da tabela de pacientes
+// Criação da tabela de pacientes (garante que o arquivo seja criado)
 db.run(`
     CREATE TABLE IF NOT EXISTS pacientes (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -35,7 +37,13 @@ db.run(`
         observacoesMedicas TEXT,
         status INTEGER NOT NULL DEFAULT 0
     )
-`);
+`, (err) => {
+    if (err) {
+        console.error('Erro ao criar tabela:', err.message);
+    } else {
+        console.log('Tabela pacientes criada ou já existente');
+    }
+});
 
 // Endpoint para cadastrar um paciente
 app.post('/pacientes', (req, res) => {
@@ -114,14 +122,23 @@ app.delete('/pacientes/:id', (req, res) => {
     });
 });
 
-// Nova rota para baixar o arquivo pacientes.db
+// Rota para baixar o arquivo pacientes.db
 app.get('/download-db', (req, res) => {
-    const filePath = path.join(__dirname, 'pacientes.db'); // Caminho do banco de dados
-    res.download(filePath, 'pacientes.db', (err) => {
+    const filePath = path.join(__dirname, 'pacientes.db');
+    console.log('Tentando baixar o arquivo em:', filePath);
+
+    // Verifica se o arquivo existe antes de tentar baixar
+    fs.access(filePath, fs.constants.F_OK, (err) => {
         if (err) {
-            console.error('Erro ao baixar o arquivo:', err);
-            res.status(500).send('Erro ao baixar o banco de dados');
+            console.error('Arquivo não encontrado:', err);
+            return res.status(404).send('Banco de dados não encontrado. Cadastre um paciente primeiro.');
         }
+        res.download(filePath, 'pacientes.db', (downloadErr) => {
+            if (downloadErr) {
+                console.error('Erro ao baixar o arquivo:', downloadErr);
+                res.status(500).send('Erro ao baixar o banco de dados');
+            }
+        });
     });
 });
 
