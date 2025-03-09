@@ -4,7 +4,7 @@
   "main": "backend/server.js",
   "scripts": {
     "start": "node backend/server.js",
-    "postinstall": "npm rebuild sqlite3"  // Força a recompilação do sqlite3 após a instalação
+    "postinstall": "npm install --build-from-source sqlite3"
   },
   "dependencies": {
     "express": "^4.18.2",
@@ -12,6 +12,6 @@
     "cors": "^2.8.5"
   },
   "devDependencies": {
-    "node-gyp": "^10.2.0"  // Ferramenta para compilar bindings nativos
+    "node-gyp": "^10.2.0"
   }
 }
