@@ -114,11 +114,6 @@ app.delete('/pacientes/:id', (req, res) => {
     });
 });
 
-// Rota padrão para o frontend
-app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, '../frontend', 'index.html'));
-});
-
 // Nova rota para baixar o arquivo pacientes.db
 app.get('/download-db', (req, res) => {
     const filePath = path.join(__dirname, 'pacientes.db'); // Caminho do banco de dados
@@ -128,6 +123,11 @@ app.get('/download-db', (req, res) => {
             res.status(500).send('Erro ao baixar o banco de dados');
         }
     });
+});
+
+// Rota padrão para o frontend (deve ficar por último)
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, '../frontend', 'index.html'));
 });
 
 // Inicia o servidor
