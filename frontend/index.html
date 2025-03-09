@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ATIVA CICC - Avaliação de Saúde</title>
+    <link rel="stylesheet" href="styles.css">
+    <!-- Ícones do FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Cabeçalho com Logo -->
+        <header>
+            <img src="logo.png" alt="Logo ATIVA CICC" class="logo">
+            <button id="abrirModalFormulario" class="btn-inserir-paciente">Inserir Novo Paciente      <i class="fa fa-plus" aria-hidden="true"></i></button>
+        </header>
+
+        <!-- Coluna da Tabela de Dados -->
+        <div class="data-column">
+            <h2>Pacientes Cadastrados</h2>
+            <!-- Campo de busca -->
+            <div class="busca-container">
+                <input type="text" id="busca" placeholder="Buscar paciente pelo nome..." oninput="filtrarPacientes()">
+                <div class="filtro-toggle">
+                    <button id="filtroTodos" class="filtro-btn ativo" onclick="filtrarPorToggle('todos')">Todos</button>
+                    <button id="filtroLigado" class="filtro-btn" onclick="filtrarPorToggle('ligado')">Participantes</button>
+                    <button id="filtroDesligado" class="filtro-btn" onclick="filtrarPorToggle('desligado')">Não Participantes</button>
+                </div>
+            </div>
+            <table id="tabelaPacientes">
+                <thead>
+                    <tr>
+                        <th>Nome</th>
+                        <th>Matrícula</th>
+                        <th>Idade</th>
+                        <th>Força Operativa</th>
+                        <th>Participante?</th> <!-- Nova coluna -->
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Dados dos pacientes serão inseridos aqui via JavaScript -->
+                </tbody>
+            </table>
+            <!-- Navegação de páginas -->
+            <div class="paginacao">
+                <button id="anterior" onclick="mudarPagina(-1)">Anterior</button>
+                <span id="paginaAtual">1</span>
+                <button id="proximo" onclick="mudarPagina(1)">Próximo</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Formulário -->
+    <div id="modalFormulario" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Inserir Novo Paciente</h2>
+            <form id="avaliacaoForm">
+                <div class="form-colunas">
+                    <!-- Coluna 1: Dados Pessoais -->
+                    <div class="coluna">
+                        <fieldset>
+                            <legend>Dados Pessoais</legend>
+                            <label for="nome">Nome Completo:</label>
+                            <input type="text" id="nome" name="nome" required>
+                        
+                            <label for="matricula">Matrícula:</label>
+                            <input type="text" id="matricula" name="matricula" required>
+                        
+                            <label for="dataNascimento">Data de Nascimento:</label>
+                            <input type="date" id="dataNascimento" name="dataNascimento" required>
+                        
+                            <label for="forcaOperativa">Força Operativa:</label>
+                            <select id="forcaOperativa" name="forcaOperativa" required>
+                                <option value="">Selecione uma opção</option>
+                                <option value="Policia Militar">Polícia Militar</option>
+                                <option value="Corpo de Bombeiros Militar">Corpo de Bombeiros Militar</option>
+                                <option value="Polícia Civil">Polícia Civil</option>
+                                <option value="STTP">STTP</option>
+                                <option value="Polícia Penal">Polícia Penal</option>
+                                <option value="Outros">Outros</option>
+                            </select>
+                        </fieldset>
+                    </div>
+
+                    <!-- Coluna 2: Medidas e Avaliação Clínica -->
+                    <div class="coluna">
+                        <fieldset>
+                            <legend>Medidas Antropométricas</legend>
+                            <label for="peso">Peso (kg):</label>
+                            <input type="number" id="peso" name="peso" step="0.1" required>
+
+                            <label for="altura">Altura (cm):</label>
+                            <input type="number" id="altura" name="altura" required>
+
+                            <label for="circAbdominal">Circunferência Abdominal (cm):</label>
+                            <input type="number" id="circAbdominal" name="circAbdominal" required>
+                        </fieldset>
+
+
+                    </div>
+                    <fieldset>
+                        <legend>Avaliação Clínica</legend>
+                        <label for="pressaoArterial">Pressão Arterial (mmHg):</label>
+                        <input type="text" id="pressaoArterial" name="pressaoArterial" placeholder="Ex: 120/80" required>
+
+                        <label for="batimentos">Batimentos Cardíacos (bpm):</label>
+                        <input type="number" id="batimentos" name="batimentos" required>
+
+                        <label for="glicemia">Glicemia (mg/dL):</label>
+                        <input type="number" id="glicemia" name="glicemia" required>
+                    </fieldset>
+                </div>
+                <button type="submit">Enviar Avaliação</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal de Editar -->
+    <div id="modalEditar" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Editar Paciente</h2>
+            <div class="editar-colunas">
+                <!-- Coluna 1 -->
+                <div class="coluna">
+                    <p><strong>Nome:</strong> <span id="editarNomeTexto"></span> <i class="fas fa-edit" onclick="editarCampo('editarNome')"></i></p>
+                    <input type="text" id="editarNome" class="editar-campo" style="display: none;">
+    
+                    <p><strong>Matrícula:</strong> <span id="editarMatriculaTexto"></span> <i class="fas fa-edit" onclick="editarCampo('editarMatricula')"></i></p>
+                    <input type="text" id="editarMatricula" class="editar-campo" style="display: none;">
+    
+                    <p><strong>Data de Nascimento:</strong> <span id="editarDataNascimentoTexto"></span> <i class="fas fa-edit" onclick="editarCampo('editarDataNascimento')"></i></p>
+                    <input type="date" id="editarDataNascimento" class="editar-campo" style="display: none;">
+    
+                    <p><strong>Força Operativa:</strong> <span id="editarForcaOperativaTexto"></span> <i class="fas fa-edit" onclick="editarCampo('editarForcaOperativa')"></i></p>
+                    <select id="editarForcaOperativa" class="editar-campo" style="display: none;">
+                        <option value="">Selecione uma opção</option>
+                        <option value="Policia Militar">Polícia Militar</option>
+                        <option value="Corpo de Bombeiros Militar">Corpo de Bombeiros Militar</option>
+                        <option value="Polícia Civil">Polícia Civil</option>
+                        <option value="STTP">STTP</option>
+                        <option value="Polícia Penal">Polícia Penal</option>
+                        <option value="Outros">Outros</option>
+                    </select>
+    
+                    <p><strong>Peso:</strong> <span id="editarPesoTexto"></span> kg <i class="fas fa-edit" onclick="editarCampo('editarPeso')"></i></p>
+                    <input type="number" id="editarPeso" class="editar-campo" style="display: none;">
+    
+                    <p><strong>Altura:</strong> <span id="editarAlturaTexto"></span> cm <i class="fas fa-edit" onclick="editarCampo('editarAltura')"></i></p>
+                    <input type="number" id="editarAltura" class="editar-campo" style="display: none;">
+                </div>
+    
+                <!-- Coluna 2 -->
+                <div class="coluna">
+                    <p><strong>Circunferência Abdominal:</strong> <span id="editarCircAbdominalTexto"></span> cm <i class="fas fa-edit" onclick="editarCampo('editarCircAbdominal')"></i></p>
+                    <input type="number" id="editarCircAbdominal" class="editar-campo" style="display: none;">
+    
+                    <p><strong>Pressão Arterial:</strong> <span id="editarPressaoArterialTexto"></span> <i class="fas fa-edit" onclick="editarCampo('editarPressaoArterial')"></i></p>
+                    <input type="text" id="editarPressaoArterial" class="editar-campo" style="display: none;">
+    
+                    <p><strong>Batimentos Cardíacos:</strong> <span id="editarBatimentosTexto"></span> bpm <i class="fas fa-edit" onclick="editarCampo('editarBatimentos')"></i></p>
+                    <input type="number" id="editarBatimentos" class="editar-campo" style="display: none;">
+    
+                    <p><strong>Glicemia:</strong> <span id="editarGlicemiaTexto"></span> mg/dL <i class="fas fa-edit" onclick="editarCampo('editarGlicemia')"></i></p>
+                    <input type="number" id="editarGlicemia" class="editar-campo" style="display: none;">
+                </div>
+            </div>
+            <button onclick="salvarEdicao()" style="margin-top: 20px;">Salvar Alterações</button>
+        </div>
+    </div>
+
+    <!-- Modal de Excluir -->
+    <div id="modalExcluir" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Excluir Paciente</h2>
+            <p>Tem certeza que deseja excluir este paciente?</p>
+            <button id="confirmarExclusao">Sim, Excluir</button>
+            <button id="cancelarExclusao">Cancelar</button>
+        </div>
+    </div>
+
+    <!-- Modal de Detalhar -->
+    <div id="modalDetalhar" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Detalhes do Paciente</h2>
+            <div id="detalhesPaciente">
+                <!-- Detalhes do paciente serão inseridos aqui -->
+            </div>
+            <button id="btnImprimir" onclick="imprimirInformacoes()"><i class="fas fa-print"></i> Imprimir</button>
+        </div>
+    </div>
+
+    <!-- Modal de Informações Médicas -->
+    <div id="modalInfoMedicas" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Informações Médicas</h2>
+            <form id="formInfoMedicas">
+                <label for="observacoesMedicas">Observações Médicas:</label>
+                <textarea id="observacoesMedicas" name="observacoesMedicas" rows="4" style="white-space: pre-wrap;"></textarea>
+                <button type="submit">Salvar Informações</button>
+            </form>
+        </div>
+    </div>
+    <footer>
+        <div class="footer-content">
+            <p>Centro Integrado de Comando e Controle - 2ª REISP / SESDS-PB</p>
+            <p>&copy; 2023 - Todos os direitos reservados</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

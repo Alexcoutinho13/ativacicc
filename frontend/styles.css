@@ -1,0 +1,476 @@
+/* Estilos Gerais */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+    color: #333;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+}
+
+header {
+    text-align: center;
+    margin-bottom: 20px;
+    position: relative;
+}
+
+.logo {
+    max-width: 100%;
+    margin-bottom: 15px;
+}
+
+.btn-inserir-paciente {
+    padding: 10px 20px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 500;
+    transition: background-color 0.3s ease;
+}
+
+.btn-inserir-paciente:hover {
+    background-color: #208537;
+}
+
+.data-column {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Estilos do Formulário */
+.form-colunas {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.form-colunas .coluna {
+    flex: 1;
+}
+
+fieldset {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    background-color: #fff;
+    padding: 10px;
+}
+
+legend {
+    font-weight: bold;
+    color: #555;
+    background-color: #f9f9f9;
+    padding: 5px 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    color: #555;
+    font-weight: 500;
+}
+
+input[type="text"],
+input[type="date"],
+input[type="number"],
+textarea,
+select {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    box-sizing: border-box;
+    font-size: 14px;
+    transition: border-color 0.3s ease;
+}
+
+input[type="text"]:focus,
+input[type="date"]:focus,
+input[type="number"]:focus,
+textarea:focus,
+select:focus {
+    border-color: #007bff;
+    outline: none;
+}
+
+textarea {
+    resize: vertical;
+    min-height: 100px;
+    white-space: pre-wrap; /* Mantém as quebras de linha */
+}
+
+button {
+    width: 100%;
+    padding: 12px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 500;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #1b682d;
+}
+
+/* Estilos da Tabela */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+th, td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+    border-left: 1px solid #ddd;
+}
+
+th {
+    background-color: #436488;
+    color: white;
+    font-weight: 600;
+}
+
+tr:hover {
+    background-color: #f1f1f1;
+}
+
+/* Ajuste para a coluna de matrícula */
+table th:nth-child(2), table td:nth-child(2) {
+    width: 120px; /* Largura fixa para a coluna de matrícula */
+}
+
+/* Botões de Ação */
+.acoes {
+    display: flex;
+    gap: 10px;
+}
+
+.acoes button {
+    padding: 5px 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+}
+
+.acoes button.editar {
+    background-color: #ffc107;
+    color: #000;
+}
+
+.acoes button.excluir {
+    background-color: #dc3545;
+    color: #fff;
+}
+
+.acoes button.detalhar {
+    background-color: #28a745;
+    color: #fff;
+}
+
+.acoes button.medico {
+    background-color: #17a2b8;
+    color: #fff;
+}
+
+.acoes button:hover {
+    opacity: 0.9;
+}
+
+/* Estilos para o botão toggle */
+.toggle-btn {
+    padding: 5px 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+}
+
+.toggle-btn.desligado {
+    background-color: #dc3545; /* Vermelho */
+    color: white;
+}
+
+.toggle-btn.ligado {
+    background-color: #28a745; /* Verde */
+    color: white;
+}
+
+.toggle-btn:hover {
+    opacity: 0.8;
+}
+
+/* Modais */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background-color: #fff;
+    padding: 10px 20px;
+    border-radius: 8px;
+    width: 90%;
+    max-width: 800px;
+    position: relative;
+}
+
+.modal-content .close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+.modal-content button {
+    width: 100%;
+    padding: 12px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 500;
+    transition: background-color 0.3s ease;
+    margin-top: 20px; /* Espaçamento acima do botão */
+}
+
+.modal-content button:hover {
+    background-color: #1b682d;
+}
+
+.modal-content h2 {
+    margin-bottom: 5px;
+}
+
+/* Estilos para o modal de edição */
+.editar-colunas {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.editar-colunas .coluna {
+    flex: 1;
+}
+
+.editar-colunas p {
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+}
+
+.editar-colunas i {
+    margin-left: 10px;
+    cursor: pointer;
+    color: #007bff;
+}
+
+.editar-colunas i:hover {
+    opacity: 0.8;
+}
+
+.editar-campo {
+    width: 100%;
+    padding: 5px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+/* Estilos para a página de impressão */
+@media print {
+    body {
+        font-family: Arial, sans-serif;
+        margin: 20px;
+    }
+
+    h2 {
+        color: #007bff;
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+    }
+
+    th, td {
+        border: 1px solid #000;
+        padding: 10px;
+        text-align: left;
+    }
+
+    th {
+        background-color: #f2f2f2;
+        font-weight: bold;
+    }
+}
+
+#detalhesPaciente {
+    word-break: break-all;
+}
+
+#detalhesPaciente p {
+    margin: 5px;
+}
+
+/* Paginação */
+.paginacao {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+    gap: 10px;
+}
+
+.paginacao button {
+    padding: 8px 12px;
+    border: 1px solid #007bff;
+    border-radius: 4px;
+    background-color: #fff;
+    color: #007bff;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.paginacao button:hover {
+    background-color: #007bff;
+    color: #fff;
+}
+
+.paginacao button.ativo {
+    background-color: #007bff;
+    color: #fff;
+}
+
+/* Estilos para os botões de filtro */
+.filtro-toggle {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.filtro-btn {
+    padding: 8px 12px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    transition: background-color 0.3s ease;
+    background-color: #f1f1f1; /* Cor de fundo padrão */
+    color: #333; /* Cor do texto padrão */
+}
+
+.filtro-btn.ativo {
+    background-color: #436488; /* Cor de fundo quando ativo */
+    color: white; /* Cor do texto quando ativo */
+}
+
+.filtro-btn:hover {
+    opacity: 0.9;
+}
+
+/* Estilos para o rodapé */
+footer {
+    background-color: #436488; /* Cor de fundo do rodapé */
+    color: white; /* Cor do texto */
+    padding: 20px 0; /* Espaçamento interno */
+    text-align: center; /* Centraliza o conteúdo */
+    font-size: 14px; /* Tamanho da fonte */
+    border-top: 2px solid #2c3e50; /* Borda superior */
+    margin-top: 20px; /* Espaçamento acima do rodapé */
+}
+
+footer .footer-content p {
+    margin: 5px 0; /* Espaçamento entre os parágrafos */
+}
+
+footer .footer-content p:first-child {
+    font-weight: bold; /* Negrito para o nome do CICC */
+}
+
+footer .footer-content p:last-child {
+    font-size: 12px; /* Tamanho menor para o texto de direitos reservados */
+}
+
+/* Estilos para Alertas */
+.alert {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 15px 20px;
+    border-radius: 6px;
+    color: white;
+    font-weight: 500;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    max-width: 400px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.alert.show {
+    opacity: 1;
+}
+
+.alert.success {
+    background-color: #28a745;
+}
+
+.alert.error {
+    background-color: #dc3545;
+}
+
+.alert .close-alert {
+    cursor: pointer;
+    font-size: 18px;
+    line-height: 1;
+}
+
+.alert .close-alert:hover {
+    opacity: 0.8;
+}
