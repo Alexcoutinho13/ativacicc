@@ -119,6 +119,17 @@ app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, '../frontend', 'index.html'));
 });
 
+// Nova rota para baixar o arquivo pacientes.db
+app.get('/download-db', (req, res) => {
+    const filePath = path.join(__dirname, 'pacientes.db'); // Caminho do banco de dados
+    res.download(filePath, 'pacientes.db', (err) => {
+        if (err) {
+            console.error('Erro ao baixar o arquivo:', err);
+            res.status(500).send('Erro ao baixar o banco de dados');
+        }
+    });
+});
+
 // Inicia o servidor
 const port = process.env.PORT || 3000;
 app.listen(port, '0.0.0.0', () => {
