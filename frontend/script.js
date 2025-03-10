@@ -405,17 +405,41 @@ function imprimirInformacoes(id) {
         showAlert('A janela de impressão foi bloqueada. Desative o bloqueador de pop-ups e tente novamente.', 'error');
         return;
     }
-
     janelaImpressao.document.write(`
         <html>
             <head>
                 <title>Informações do Paciente - ${paciente.nome}</title>
                 <style>
-                    body { font-family: Arial, sans-serif; margin: 20px; }
-                    h2 { color: #007bff; text-align: center; margin-bottom: 20px; }
-                    table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-                    th, td { border: 1px solid #000; padding: 10px; text-align: left; }
-                    th { background-color: #f2f2f2; font-weight: bold; }
+                    body { 
+                        font-family: Arial, sans-serif; 
+                        margin: 20px; 
+                    }
+                    h2 { 
+                        color: #007bff; 
+                        text-align: center; 
+                        margin-bottom: 20px; 
+                    }
+                    table { 
+                        width: 100%; 
+                        border-collapse: collapse; 
+                        margin-top: 20px; 
+                        table-layout: fixed; /* Força as colunas a respeitarem a largura definida */
+                    }
+                    th, td { 
+                        border: 1px solid #000; 
+                        padding: 10px; 
+                        text-align: left; 
+                        word-wrap: break-word; /* Quebra palavras longas */
+                        overflow-wrap: break-word; /* Alternativa para word-wrap */
+                    }
+                    th { 
+                        background-color: #f2f2f2; 
+                        font-weight: bold; 
+                    }
+                    /* Ajuste específico para a segunda coluna */
+                    td:nth-child(2) {
+                        width: 40%; /* Defina a largura da segunda coluna */
+                    }
                 </style>
             </head>
             <body>${conteudo}</body>
