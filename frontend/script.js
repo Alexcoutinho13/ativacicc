@@ -440,10 +440,10 @@ function imprimirInformacoes(id) {
                     th {
                         background-color: #f2f2f2;
                         font-weight: bold;
-                        width: 30%;
+                        width: 70%;
                     }
                     td {
-                        width: 70%;
+                        width: 100%;
                     }
                     .observacoes {
                         word-wrap: break-word;
