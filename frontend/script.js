@@ -440,13 +440,15 @@ function imprimirInformacoes(id) {
                 th {
                     background-color: #f2f2f2;
                     font-weight: bold;
-                    width: 25%; /* Reduzi a largura da primeira coluna */
+                    width: 40%; /* Primeira coluna com largura fixa razoável */
+                    min-width: 120px; /* Garante um tamanho mínimo para evitar compressão excessiva */
                 }
                 td {
-                    width: 75%; /* Aumentei a largura da segunda coluna */
+                    width: 60%; /* Segunda coluna com mais espaço */
                     word-wrap: break-word;
                     overflow-wrap: break-word;
-                    white-space: normal; /* Permite quebra de linha natural */
+                    white-space: normal; /* Quebra de linha natural */
+                    min-width: 200px; /* Evita que a coluna fique muito estreita */
                 }
                 .observacoes {
                     word-wrap: break-word;
@@ -467,7 +469,22 @@ function imprimirInformacoes(id) {
                 }
             </style>
         </head>
-        <body>${conteudo}</body>
+        <body>
+            <h2>Informações do Paciente</h2>
+            <table>
+                <tr><th>Campo</th><th>Valor</th></tr>
+                <tr><td>Nome</td><td>ALEX COITINHO ARALUO</td></tr>
+                <tr><td>Idade</td><td>38</td></tr>
+                <tr><td>Força Operativa</td><td>Corpo de Bombeiros Militar</td></tr>
+                <tr><td>Peso</td><td>96 kg</td></tr>
+                <tr><td>Altura</td><td>176 cm</td></tr>
+                <tr><td>Circunferência Abdominal</td><td>1 cm</td></tr>
+                <tr><td>Pressão Arterial</td><td>1</td></tr>
+                <tr><td>Batimentos Cardíacos</td><td>1 bpm</td></tr>
+                <tr><td>Glicemia</td><td>1 mg/dL</td></tr>
+                <tr><td>Observações Médicas</td><td class="observacoes"></td></tr>
+            </table>
+        </body>
     </html>
     `);
     janelaImpressao.document.close();
