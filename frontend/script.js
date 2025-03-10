@@ -41,12 +41,7 @@ document.querySelectorAll('.close').forEach(close => {
     });
 });
 
-// Fechar modal ao clicar fora
-window.addEventListener('click', function (event) {
-    document.querySelectorAll('.modal').forEach(modal => {
-        if (event.target === modal) modal.style.display = 'none';
-    });
-});
+
 
 // Adicionar paciente ao enviar o formulário
 document.getElementById('avaliacaoForm').addEventListener('submit', async function (event) {
@@ -401,7 +396,7 @@ function imprimirInformacoes(id) {
             <tr><td>Pressão Arterial</td><td>${paciente.pressaoArterial}</td></tr>
             <tr><td>Batimentos Cardíacos</td><td>${paciente.batimentos} bpm</td></tr>
             <tr><td>Glicemia</td><td>${paciente.glicemia} mg/dL</td></tr>
-            <tr><td>Observações Médicas</td><td>${paciente.observacoesMedicas || 'Nenhuma'}</td></tr>
+            <tr><td>Observações Médicas</td><td class="observacoes">${paciente.observacoesMedicas || 'Nenhuma'}</td></tr>
         </table>
     `;
 
@@ -416,11 +411,58 @@ function imprimirInformacoes(id) {
             <head>
                 <title>Informações do Paciente - ${paciente.nome}</title>
                 <style>
-                    body { font-family: Arial, sans-serif; margin: 20px; }
-                    h2 { color: #007bff; text-align: center; margin-bottom: 20px; }
-                    table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-                    th, td { border: 1px solid #000; padding: 10px; text-align: left; }
-                    th { background-color: #f2f2f2; font-weight: bold; }
+                    @page {
+                        size: A4;
+                        margin: 20mm;
+                    }
+                    body {
+                        font-family: Arial, sans-serif;
+                        margin: 0;
+                        padding: 20mm;
+                    }
+                    h2 {
+                        color: #007bff;
+                        text-align: center;
+                        margin-bottom: 20px;
+                        font-size: 20px;
+                    }
+                    table {
+                        width: 100%;
+                        border-collapse: collapse;
+                        font-size: 14px;
+                    }
+                    th, td {
+                        border: 1px solid #000;
+                        padding: 8px;
+                        text-align: left;
+                        vertical-align: top;
+                    }
+                    th {
+                        background-color: #f2f2f2;
+                        font-weight: bold;
+                        width: 30%;
+                    }
+                    td {
+                        width: 70%;
+                    }
+                    .observacoes {
+                        word-wrap: break-word;
+                        overflow-wrap: break-word;
+                        max-width: 0; /* Permite que o texto ocupe o espaço disponível */
+                        white-space: normal; /* Permite quebra de linha */
+                    }
+                    @media print {
+                        body {
+                            margin: 0;
+                        }
+                        table {
+                            page-break-inside: auto;
+                        }
+                        tr {
+                            page-break-inside: avoid;
+                            page-break-after: auto;
+                        }
+                    }
                 </style>
             </head>
             <body>${conteudo}</body>
