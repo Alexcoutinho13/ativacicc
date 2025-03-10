@@ -407,66 +407,68 @@ function imprimirInformacoes(id) {
     }
 
     janelaImpressao.document.write(`
-        <html>
-            <head>
-                <title>Informações do Paciente - ${paciente.nome}</title>
-                <style>
-                    @page {
-                        size: A4;
-                        margin: 20mm;
-                    }
+<html>
+        <head>
+            <title>Informações do Paciente - ${paciente.nome}</title>
+            <style>
+                @page {
+                    size: A4;
+                    margin: 20mm;
+                }
+                body {
+                    font-family: Arial, sans-serif;
+                    margin: 0;
+                    padding: 20mm;
+                }
+                h2 {
+                    color: #007bff;
+                    text-align: center;
+                    margin-bottom: 20px;
+                    font-size: 20px;
+                }
+                table {
+                    width: 100%;
+                    border-collapse: collapse;
+                    font-size: 14px;
+                }
+                th, td {
+                    border: 1px solid #000;
+                    padding: 8px;
+                    text-align: left;
+                    vertical-align: top;
+                }
+                th {
+                    background-color: #f2f2f2;
+                    font-weight: bold;
+                    width: 25%; /* Reduzi a largura da primeira coluna */
+                }
+                td {
+                    width: 75%; /* Aumentei a largura da segunda coluna */
+                    word-wrap: break-word;
+                    overflow-wrap: break-word;
+                    white-space: normal; /* Permite quebra de linha natural */
+                }
+                .observacoes {
+                    word-wrap: break-word;
+                    overflow-wrap: break-word;
+                    white-space: normal;
+                }
+                @media print {
                     body {
-                        font-family: Arial, sans-serif;
                         margin: 0;
-                        padding: 20mm;
-                    }
-                    h2 {
-                        color: #007bff;
-                        text-align: center;
-                        margin-bottom: 20px;
-                        font-size: 20px;
                     }
                     table {
-                        width: 100%;
-                        border-collapse: collapse;
-                        font-size: 14px;
+                        page-break-inside: auto;
                     }
-                    th, td {
-                        border: 1px solid #000;
-                        padding: 8px;
-                        text-align: left;
-                        vertical-align: top;
+                    tr {
+                        page-break-inside: avoid;
+                        page-break-after: auto;
                     }
-                    th {
-                        background-color: #f2f2f2;
-                        font-weight: bold;
-                        width: 70%;
-                    }
-                    td {
-                        width: 100%;
-                    }
-                    .observacoes {
-                        word-wrap: break-word;
-                        overflow-wrap: break-word;
-                        max-width: 0; /* Permite que o texto ocupe o espaço disponível */
-                        white-space: normal; /* Permite quebra de linha */
-                    }
-                    @media print {
-                        body {
-                            margin: 0;
-                        }
-                        table {
-                            page-break-inside: auto;
-                        }
-                        tr {
-                            page-break-inside: avoid;
-                            page-break-after: auto;
-                        }
-                    }
-                </style>
-            </head>
-            <body>${conteudo}</body>
-        </html>
+                }
+            </style>
+        </head>
+        <body>${conteudo}</body>
+    </html>
     `);
     janelaImpressao.document.close();
 
