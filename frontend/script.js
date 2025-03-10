@@ -291,6 +291,11 @@ function abrirModalExcluir(id) {
 
 function abrirModalDetalhar(id) {
     const paciente = pacientes.find(p => p.id === id);
+    if (!paciente) {
+        showAlert('Paciente não encontrado.', 'error');
+        return;
+    }
+
     const detalhes = `
         <p><strong>Nome:</strong> ${paciente.nome}</p>
         <p><strong>Idade:</strong> ${paciente.idade}</p>
@@ -301,7 +306,8 @@ function abrirModalDetalhar(id) {
         <p><strong>Pressão Arterial:</strong> ${paciente.pressaoArterial}</p>
         <p><strong>Batimentos Cardíacos:</strong> ${paciente.batimentos} bpm</p>
         <p><strong>Glicemia:</strong> ${paciente.glicemia} mg/dL</p>
-        <p><strong>Observações Médicas:</strong> ${paciente.observacoesMedicas}</p>
+        <p><strong>Observações Médicas:</strong> ${paciente.observacoesMedicas || 'Nenhuma'}</p>
+        <button onclick="imprimirInformacoes(${paciente.id})">Imprimir</button>
     `;
     document.getElementById('detalhesPaciente').innerHTML = detalhes;
     document.getElementById('modalDetalhar').style.display = 'flex';
@@ -374,8 +380,14 @@ function atualizarTabelaComFiltro(pacientesFiltrados) {
     atualizarPaginacao(pacientesFiltrados.length);
 }
 
-function imprimirInformacoes() {
-    const paciente = pacienteEditando;
+function imprimirInformacoes(id) {
+    const paciente = pacientes.find(p => p.id === id);
+    if (!paciente) {
+        console.error('Paciente não encontrado');
+        showAlert('Paciente não encontrado. Selecione um paciente válido.', 'error');
+        return;
+    }
+
     const conteudo = `
         <h2>Informações do Paciente</h2>
         <table>
@@ -389,15 +401,20 @@ function imprimirInformacoes() {
             <tr><td>Pressão Arterial</td><td>${paciente.pressaoArterial}</td></tr>
             <tr><td>Batimentos Cardíacos</td><td>${paciente.batimentos} bpm</td></tr>
             <tr><td>Glicemia</td><td>${paciente.glicemia} mg/dL</td></tr>
-            <tr><td>Observações Médicas</td><td>${paciente.observacoesMedicas}</td></tr>
+            <tr><td>Observações Médicas</td><td>${paciente.observacoesMedicas || 'Nenhuma'}</td></tr>
         </table>
     `;
 
     const janelaImpressao = window.open('', '', 'width=600,height=600');
+    if (!janelaImpressao) {
+        showAlert('A janela de impressão foi bloqueada. Desative o bloqueador de pop-ups e tente novamente.', 'error');
+        return;
+    }
+
     janelaImpressao.document.write(`
         <html>
             <head>
-                <title>Informações do Paciente</title>
+                <title>Informações do Paciente - ${paciente.nome}</title>
                 <style>
                     body { font-family: Arial, sans-serif; margin: 20px; }
                     h2 { color: #007bff; text-align: center; margin-bottom: 20px; }
@@ -410,7 +427,13 @@ function imprimirInformacoes() {
         </html>
     `);
     janelaImpressao.document.close();
-    janelaImpressao.print();
+
+    janelaImpressao.onload = function () {
+        janelaImpressao.print();
+        janelaImpressao.onafterprint = function () {
+            janelaImpressao.close();
+        };
+    };
 }
 
 // Carrega os pacientes ao iniciar
