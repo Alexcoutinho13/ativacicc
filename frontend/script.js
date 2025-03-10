@@ -440,20 +440,21 @@ function imprimirInformacoes(id) {
                 th {
                     background-color: #f2f2f2;
                     font-weight: bold;
-                    width: 40%; /* Primeira coluna com largura fixa razoável */
-                    min-width: 120px; /* Garante um tamanho mínimo para evitar compressão excessiva */
+                    width: 40%;
+                    min-width: 120px;
                 }
                 td {
-                    width: 60%; /* Segunda coluna com mais espaço */
+                    width: 60%;
                     word-wrap: break-word;
                     overflow-wrap: break-word;
-                    white-space: normal; /* Quebra de linha natural */
-                    min-width: 200px; /* Evita que a coluna fique muito estreita */
+                    white-space: normal;
+                    min-width: 200px;
                 }
                 .observacoes {
                     word-wrap: break-word;
                     overflow-wrap: break-word;
                     white-space: normal;
+                    display: block; /* Garante que o conteúdo seja exibido */
                 }
                 @media print {
                     body {
@@ -473,16 +474,16 @@ function imprimirInformacoes(id) {
             <h2>Informações do Paciente</h2>
             <table>
                 <tr><th>Campo</th><th>Valor</th></tr>
-                <tr><td>Nome</td><td>ALEX COITINHO ARALUO</td></tr>
-                <tr><td>Idade</td><td>38</td></tr>
-                <tr><td>Força Operativa</td><td>Corpo de Bombeiros Militar</td></tr>
-                <tr><td>Peso</td><td>96 kg</td></tr>
-                <tr><td>Altura</td><td>176 cm</td></tr>
-                <tr><td>Circunferência Abdominal</td><td>1 cm</td></tr>
-                <tr><td>Pressão Arterial</td><td>1</td></tr>
-                <tr><td>Batimentos Cardíacos</td><td>1 bpm</td></tr>
-                <tr><td>Glicemia</td><td>1 mg/dL</td></tr>
-                <tr><td>Observações Médicas</td><td class="observacoes"></td></tr>
+                <tr><td>Nome</td><td>${paciente.nome || 'ALEX COITINHO ARALUO'}</td></tr>
+                <tr><td>Idade</td><td>${paciente.idade || '38'}</td></tr>
+                <tr><td>Força Operativa</td><td>${paciente.forcaOperativa || 'Corpo de Bombeiros Militar'}</td></tr>
+                <tr><td>Peso</td><td>${paciente.peso || '96 kg'}</td></tr>
+                <tr><td>Altura</td><td>${paciente.altura || '176 cm'}</td></tr>
+                <tr><td>Circunferência Abdominal</td><td>${paciente.circunferenciaAbdominal || '1 cm'}</td></tr>
+                <tr><td>Pressão Arterial</td><td>${paciente.pressaoArterial || '1'}</td></tr>
+                <tr><td>Batimentos Cardíacos</td><td>${paciente.batimentosCardiacos || '1 bpm'}</td></tr>
+                <tr><td>Glicemia</td><td>${paciente.glicemia || '1 mg/dL'}</td></tr>
+                <tr><td>Observações Médicas</td><td class="observacoes">${paciente.observacoes || 'Sem observações'}</td></tr>
             </table>
         </body>
     </html>
