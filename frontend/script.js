@@ -396,7 +396,7 @@ function imprimirInformacoes(id) {
             <tr><td>Pressão Arterial</td><td>${paciente.pressaoArterial}</td></tr>
             <tr><td>Batimentos Cardíacos</td><td>${paciente.batimentos} bpm</td></tr>
             <tr><td>Glicemia</td><td>${paciente.glicemia} mg/dL</td></tr>
-            <tr><td>Observações Médicas</td><td class="observacoes">${paciente.observacoesMedicas || 'Nenhuma'}</td></tr>
+            <tr><td>Observações Médicas</td><td>${paciente.observacoesMedicas || 'Nenhuma'}</td></tr>
         </table>
     `;
 
@@ -407,86 +407,19 @@ function imprimirInformacoes(id) {
     }
 
     janelaImpressao.document.write(`
-<html>
-        <head>
-            <title>Informações do Paciente - ${paciente.nome}</title>
-            <style>
-                @page {
-                    size: A4;
-                    margin: 20mm;
-                }
-                body {
-                    font-family: Arial, sans-serif;
-                    margin: 0;
-                    padding: 20mm;
-                }
-                h2 {
-                    color: #007bff;
-                    text-align: center;
-                    margin-bottom: 20px;
-                    font-size: 20px;
-                }
-                table {
-                    width: 100%;
-                    border-collapse: collapse;
-                    font-size: 14px;
-                }
-                th, td {
-                    border: 1px solid #000;
-                    padding: 8px;
-                    text-align: left;
-                    vertical-align: top;
-                }
-                th {
-                    background-color: #f2f2f2;
-                    font-weight: bold;
-                    width: 40%;
-                    min-width: 120px;
-                }
-                td {
-                    width: 60%;
-                    word-wrap: break-word;
-                    overflow-wrap: break-word;
-                    white-space: normal;
-                    min-width: 200px;
-                }
-                .observacoes {
-                    word-wrap: break-word;
-                    overflow-wrap: break-word;
-                    white-space: normal;
-                    display: block; /* Garante que o conteúdo seja exibido */
-                }
-                @media print {
-                    body {
-                        margin: 0;
-                    }
-                    table {
-                        page-break-inside: auto;
-                    }
-                    tr {
-                        page-break-inside: avoid;
-                        page-break-after: auto;
-                    }
-                }
-            </style>
-        </head>
-        <body>
-            <h2>Informações do Paciente</h2>
-            <table>
-                <tr><th>Campo</th><th>Valor</th></tr>
-                <tr><td>Nome</td><td>${paciente.nome || 'ALEX COITINHO ARALUO'}</td></tr>
-                <tr><td>Idade</td><td>${paciente.idade || '38'}</td></tr>
-                <tr><td>Força Operativa</td><td>${paciente.forcaOperativa || 'Corpo de Bombeiros Militar'}</td></tr>
-                <tr><td>Peso</td><td>${paciente.peso || '96 kg'}</td></tr>
-                <tr><td>Altura</td><td>${paciente.altura || '176 cm'}</td></tr>
-                <tr><td>Circunferência Abdominal</td><td>${paciente.circunferenciaAbdominal || '1 cm'}</td></tr>
-                <tr><td>Pressão Arterial</td><td>${paciente.pressaoArterial || '1'}</td></tr>
-                <tr><td>Batimentos Cardíacos</td><td>${paciente.batimentosCardiacos || '1 bpm'}</td></tr>
-                <tr><td>Glicemia</td><td>${paciente.glicemia || '1 mg/dL'}</td></tr>
-                <tr><td>Observações Médicas</td><td class="observacoes">${paciente.observacoes || 'Sem observações'}</td></tr>
-            </table>
-        </body>
-    </html>
+        <html>
+            <head>
+                <title>Informações do Paciente - ${paciente.nome}</title>
+                <style>
+                    body { font-family: Arial, sans-serif; margin: 20px; }
+                    h2 { color: #007bff; text-align: center; margin-bottom: 20px; }
+                    table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+                    th, td { border: 1px solid #000; padding: 10px; text-align: left; }
+                    th { background-color: #f2f2f2; font-weight: bold; }
+                </style>
+            </head>
+            <body>${conteudo}</body>
+        </html>
     `);
     janelaImpressao.document.close();
 
